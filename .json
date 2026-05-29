@@ -1,0 +1,38 @@
+[
+  {
+    "id": "case_001",
+    "country": "VN",
+    "category": "Review / Đời sống",
+    "viral_reason": "Bóc phốt nhẹ nhàng + Tính chân thực cao (Authenticity)",
+    "video_description": {
+      "seconds_0_to_5": "Góc máy POV (ngôi thứ nhất). Bàn tay đang cầm một ly trà sữa bị đổ một nửa. Giọng đọc VoiceOff (nhanh, hơi bức xúc): 'Đừng ai mua ly trà sữa này nếu không muốn bị...'",
+      "seconds_5_to_15": "Camera chuyển sang quay cận cảnh (macro) các hạt trân châu bên trong. Chữ phụ đề (caption) hiện lên từng chữ theo nhịp đọc. Ánh sáng tự nhiên hơi tối.",
+      "seconds_15_to_end": "Góc máy quay về khuôn mặt người review, biểu cảm hài lòng (plot twist). Kết luận: '...bị nghiện giống mình'. Nhạc nền chuyển sang vui tươi."
+    },
+    "key_learnings_for_agent": "Sử dụng Hook dạng 'Cảnh báo/Bóc phốt' giả (Bait-and-switch). Góc máy cần chuyển từ POV sang Cận cảnh để tăng sự tập trung."
+  },
+  {
+    "id": "case_002",
+    "country": "US",
+    "category": "Kể chuyện (Storytime)",
+    "viral_reason": "Vào thẳng vấn đề + Không gian tĩnh nhưng câu chuyện động",
+    "video_description": {
+      "seconds_0_to_3": "Người kể chuyện đang vừa trang điểm (hoặc nấu ăn) vừa nhìn thẳng vào ống kính. Câu đầu tiên: 'Đây là cách người yêu cũ đã lừa tôi 500 đô'. Không có text nổi, không có nhạc nền, chỉ có tiếng ồn trắng (white noise).",
+      "seconds_3_to_45": "Góc máy tĩnh (static camera) suốt toàn bộ video. Tốc độ nói cực nhanh, không có khoảng nghỉ (jump cuts để cắt tiếng thở).",
+      "seconds_45_to_end": "Nhân vật ngừng trang điểm, nhìn thẳng vào ống kính chốt lại 1 câu mỉa mai. Video lặp lại (loop) hoàn hảo để tăng view."
+    },
+    "key_learnings_for_agent": "Không cần chuyển cảnh phức tạp nếu câu chuyện đủ mạnh. Hoạt động song song (vừa làm việc gì đó vừa kể chuyện) giúp người xem không bị chán."
+  },
+  {
+    "id": "case_003",
+    "country": "TH",
+    "category": "Quảng cáo / Hài hước",
+    "viral_reason": "Hài lố (Slapstick) + Chuyển cảnh phi logic",
+    "video_description": {
+      "seconds_0_to_5": "Mở đầu bình thường: Một người đang khóc vì chia tay. Nhạc buồn.",
+      "seconds_5_to_10": "Đột nhiên một nhân vật khác phá cửa xông vào với biểu cảm gương mặt bị bóp méo (filter), nhạc chuyển sang dồn dập (sound effects bùm chéo liên tục).",
+      "seconds_10_to_30": "Quảng cáo sản phẩm được lồng ghép cực kỳ vô lý và hài hước. Nhịp cắt cảnh cực nhanh (0.5s/cảnh)."
+    },
+    "key_learnings_for_agent": "Sự đối lập cảm xúc đột ngột ở giây thứ 5. Sử dụng âm thanh hiệu ứng (sound effects) dày đặc thay vì nhạc nền đều đều."
+  }
+]

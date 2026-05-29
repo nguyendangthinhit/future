@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 6 8 20;
+  --foreground: 226 232 240;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  position: relative;
+  color: rgb(var(--foreground));
+  min-height: 100vh;
+  background-color: #060814;
+  overflow-x: hidden;
+}
+
+/* Gradient loang nhiều màu xanh - tím - đen */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(45rem 45rem at 12% -8%, rgba(56, 189, 248, 0.18) 0%, transparent 55%),
+    radial-gradient(50rem 50rem at 88% 6%, rgba(139, 92, 246, 0.22) 0%, transparent 55%),
+    radial-gradient(55rem 55rem at 70% 105%, rgba(99, 102, 241, 0.20) 0%, transparent 55%),
+    radial-gradient(40rem 40rem at -8% 90%, rgba(168, 85, 247, 0.16) 0%, transparent 50%),
+    linear-gradient(160deg, #070a18 0%, #0b0a1f 45%, #080611 100%);
+  background-attachment: fixed;
+}
+
+/* Lớp hạt mờ tạo chiều sâu */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.4;
+  background-image: radial-gradient(
+    rgba(148, 163, 184, 0.07) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+  background-clip: content-box;
+}
+
+/* Date/time picker icon sáng lên trên nền tối */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
+.text-gradient {
+  background: linear-gradient(110deg, #38bdf8 0%, #818cf8 45%, #c084fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

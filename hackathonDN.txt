@@ -1,0 +1,16 @@
+sản phẩm: Là một sản phẩm open source bao bồm một trang web hỗ trợ việc ra video tự động. User chỉ cần chọn trang muốn đăng video, nội dung là gì, gửi thêm các hình ảnh ( nếu cần) , chọn style thiết kế video và thời lượng video (giải trí là 30 giây, 1 phút và 1 phút 30s. Còn quảng cáo thì 15s, 30s và 1 phút). Ngoài ra nó còn một cái dashboard có thể quản lý toàn bộ nội dung của các kênh. Điểm đặc biệt nằm ở sản phẩm có khả năng tự động lên idea cho video. Cụ thể thì sẽ có một luồng đi cào comment của các bài trên trang đó ( luồng sẽ định kì 1 ngày cào 1 lần ). Nó sẽ cào comment trên tiktok về, sau đó sẽ chạy qua một cái luồng dùng LLms để phân tích và gợi ý thêm những nội dung , từ đó giúp người dùng có nhiều hơn idea. 
+
+cụ thể
+web: đầu tiên khi vào sẽ chọn loại hình video ( giải trí / quảng cáo), sau đó sẽ chọn kênh mà muốn đăng video ( kênh fb hoặc tiktok) . Sau đó user sẽ nhập ngày mà họ muốn đăng video, nội dung mà họ muốn làm, tích chọn các style đã được thiết kế sẵn, chọn thời lượng và hình ảnh ( nếu cần). Lưu ý, riêng loại hình giải trí, bên cạnh chỗ nhập nội dung, có thêm 1 option nữa là có muốn thêm data hay không, nếu tích vào đó thì hệ thống sẽ lên gg và search data về để thêm nội dung. 
+Sau khi đã có đủ thông tin, LLM sẽ tổng hợp thông tin (nội dung , style,..) và gửi prompt qua n8n
+
+web: nhận prompt từ web và tạo video, sau khi tạo video, gửi video và đăng lên fanfage( fb hoặc tik tok, luồng sẽ nhận từ web. ). Đồng thời, nó cũng sẽ update lại thông tin trên gg sheet
+
+gg sheet: đây là nơi quản lý các video, bao gồm các cột: ngày đăng video, nội dung, style, prompt, trạng thái, url
+giải thích thêm về trạng thái. Cột sẽ bao gồm 3 value : pending, done và verify. Verify là cái gì thì ở dưới sẽ nói.
+
+dashboard: đây là nơi tổng hợp all thông tin của các kênh. Đi từ ngoài vào sẽ có thanh chọn các kênh đang quản lý. Khi list ra mỗi kênh sẽ thể hiện các chỉ số như: tổng doanh thu, số video, số ng theo dõi. Sau đó sẽ cụ thể với việc mỗi link trong đó, cụ thể ở trong. có thể mô hình ra biểu đồ nếu cần
+Cơ chế cào cmt về update thêm nội dung . Sẽ có một luồng chạy 1 lần 1 ngày để đi cào các comment trên các bài viết về và xem xét xem trong các video đã đăng có nội dung đó chưa, nếu chưa có thì LLMs sẽ nhận nó và cập nhập vào gg sheet, gợi ý các style đã có và có value "trạng thái" là verify. Vai trò của người dùng sẽ vào đó và xem xem nội dung đó có phù hợp với kênh hay không, nội dung và style oke chưa. Nếu oke rồi thì sẽ xác nhận nó và chuyển nó từ trạng thái verify -> pending.
+
+Sản phẩm dành cho ai? Như đã nói, sản phẩm này là một open source, điều này đồng nghĩa với việc bất cứ ai cũng có thể clone về để dùng cho mình. Khi user lấy về dùng, sẽ cần phải nhập lại trang fanpage của họ, tạo gg sheet theo các file và làm theo hướng dẫn để gg sheet liên kết được với web. Nếu style đã phù hợp với user, user sẽ dùng nó luôn hoặcuser sẽ update các style của họ nếu muốn thêm bớt sytle nào, hoặc có thể liên hệ với chủ sở hữu để hỗ trợ update lại sytle để cá nhân hóa video của họ ( tức là sản phẩm này đã làm sẵn 95% , user về tự define lại một số thứ là dùng được).
+

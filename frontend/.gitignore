@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+.env*.local
+*.log
+.DS_Store
+
+# API keys — không commit key thật
+api_key.txt

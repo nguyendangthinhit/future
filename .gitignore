@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Next.js build
+.next/
+frontend/.next/
+out/
+frontend/out/
+
+# Claude / editor / temp
+.claude/
+*.log
+
+# Office temp lock files
+~$*
+
+# Secrets — không commit API key thật
+api_key.txt
+frontend/api_key.txt
+.env
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
