@@ -11,32 +11,34 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-r from-sky-500 via-indigo-500 to-fuchsia-500 text-white hover:brightness-110 shadow-lg shadow-indigo-600/30 disabled:from-slate-600 disabled:via-slate-600 disabled:to-slate-600 disabled:shadow-none disabled:opacity-50",
+    "bg-white text-black hover:bg-slate-200 shadow-[0_0_20px_rgba(255,255,255,0.1)] disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none disabled:opacity-50 group",
   secondary:
-    "bg-white/10 text-white border border-white/15 hover:bg-white/15 disabled:opacity-40",
-  ghost: "text-slate-300 hover:bg-white/10 hover:text-white disabled:opacity-40",
+    "bg-white/5 text-white border border-white/10 hover:bg-white/10 disabled:opacity-40 group",
+  ghost: "text-slate-300 hover:bg-white/5 hover:text-white disabled:opacity-40 group",
   outline:
-    "border border-white/15 bg-white/[0.03] text-slate-200 hover:bg-white/[0.08] hover:border-white/25",
+    "border border-white/10 bg-white/[0.02] text-slate-200 hover:bg-white/[0.06] hover:border-white/20 group",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-3 text-sm",
-  md: "h-11 px-5 text-sm",
-  lg: "h-12 px-6 text-base",
+  sm: "h-10 px-5 text-sm",
+  md: "h-12 px-6 text-sm",
+  lg: "h-14 px-8 text-base",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", ...props }, ref) => (
+  ({ className, variant = "primary", size = "md", children, ...props }, ref) => (
     <button
       ref={ref}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 disabled:cursor-not-allowed active:scale-[0.98]",
+        "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 active:scale-[0.98]",
         variants[variant],
         sizes[size],
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </button>
   )
 );
 Button.displayName = "Button";

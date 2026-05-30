@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+gspread
+google-auth
+google-api-python-client
+google-generativeai
+apscheduler
+python-dotenv
+requests
+python-jose
+python-multipart
+Pillow
+httpx

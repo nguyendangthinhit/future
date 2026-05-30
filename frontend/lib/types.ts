@@ -15,7 +15,7 @@ export interface CreateVideoForm {
   channel: Channel | null;
   scheduledDate: string;
   scheduledTime: string;
-  duration: number | null;
+  duration: string | null;
   content: string;
   useGoogleData: boolean;
   searchKeyword: string;

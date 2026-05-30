@@ -30,7 +30,7 @@ export function TextInput({
   return (
     <input
       className={cn(
-        "h-11 w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 text-sm text-slate-100 placeholder:text-slate-500 transition-colors focus:border-indigo-400/60 focus:outline-none focus:ring-2 focus:ring-indigo-500/25 [color-scheme:dark]",
+        "h-12 w-full rounded-2xl border border-white/10 bg-white/[0.02] px-4 text-sm text-slate-100 placeholder:text-slate-500 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] focus:border-white/30 focus:bg-white/[0.04] focus:outline-none focus:ring-4 focus:ring-white/5 [color-scheme:dark] shadow-[inset_0_1px_1px_rgba(255,255,255,0.02)]",
         className
       )}
       {...props}
@@ -75,25 +75,25 @@ export function OptionCard({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-start gap-3 rounded-xl border p-4 text-left transition-all duration-150",
+        "group flex items-start gap-4 rounded-[1.5rem] border p-4 text-left transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
         selected
-          ? "border-indigo-400/60 bg-gradient-to-br from-sky-500/10 via-indigo-500/10 to-fuchsia-500/10 ring-2 ring-indigo-500/30"
-          : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]",
+          ? "border-white/20 bg-white/[0.08] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
+          : "border-white/5 bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]",
         className
       )}
     >
       {icon && (
         <span
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-xl",
-            selected ? "bg-white/10" : "bg-white/5"
+            "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105",
+            selected ? "bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]" : "bg-white/5"
           )}
         >
           {icon}
         </span>
       )}
-      <span className="space-y-0.5">
-        <span className="block text-sm font-semibold text-slate-100">
+      <span className="space-y-1 mt-0.5">
+        <span className="block text-sm font-semibold text-slate-100 transition-colors group-hover:text-white">
           {title}
         </span>
         {description && (

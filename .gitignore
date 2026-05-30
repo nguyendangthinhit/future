@@ -21,6 +21,14 @@ frontend/api_key.txt
 .env
 .env*.local
 
+# Documentation
+doc/
+
+# Virtual environments
+venv/
+backend/venv/
+frontend/node_modules/
+
 # OS
 .DS_Store
 Thumbs.db

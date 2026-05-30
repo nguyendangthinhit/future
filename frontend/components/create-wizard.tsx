@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Stepper } from "@/components/stepper";
@@ -33,6 +34,8 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { api } from "@/lib/api";
 
 const STEPS = ["Cấu hình", "Nội dung", "Phong cách", "Caption", "Xem lại"];
 
@@ -137,35 +140,57 @@ export function CreateWizard() {
     }
   }
 
-  async function suggestCaption() {
+  const suggestCaption = async () => {
     setGenningCaption(true);
     try {
-      const res = await fetch("/api/caption", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: form.content,
-          channel: form.channel,
-          styleId: form.styleId,
-          videoType: form.videoType,
-        }),
+      const styleName = availableStyles.find(s => s.id === form.styleId)?.name || "";
+      const res = await api.post("/caption/generate", {
+        content: form.content,
+        style_name: styleName,
+        channel: form.channel
       });
-      const data = await res.json();
-      setCaptionIdeas(data.suggestions ?? []);
-    } catch {
-      setCaptionIdeas([]);
+      if (res && res.captions) {
+        setCaptionIdeas(res.captions.map((c: string) => ({ text: c, tone: "Gợi ý AI" })));
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Lỗi khi tạo caption.");
     } finally {
       setGenningCaption(false);
     }
-  }
+  };
 
   async function submit() {
     setSubmitting(true);
-    if (!form.generatedPrompt) await generatePrompt();
-    // Giả lập gọi backend — API thật sẽ cắm sau
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
-    setSubmitted(true);
+    try {
+      if (!form.generatedPrompt) await generatePrompt();
+      
+      const formData = new FormData();
+      formData.append("video_type", form.videoType || "");
+      formData.append("channel", form.channel || "");
+      formData.append("scheduled_date", form.scheduledDate);
+      formData.append("raw_content", form.content);
+      formData.append("style_id", form.styleId || "");
+      
+      const styleName = availableStyles.find(s => s.id === form.styleId)?.name || "";
+      formData.append("style_name", styleName);
+      formData.append("duration", (form.duration || 30).toString());
+      formData.append("country_code", "VN");
+      formData.append("use_google_data", form.useGoogleData ? "true" : "false");
+      formData.append("search_keyword", form.searchKeyword);
+      
+      if (form.images.length > 0 && form.images[0].file) {
+        formData.append("mascot_image", form.images[0].file);
+      }
+
+      await api.post("/video/create", formData);
+      setSubmitted(true);
+    } catch (e) {
+      console.error("Failed to create video:", e);
+      alert("Lỗi khi tạo video. Vui lòng thử lại!");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const reset = () => {
@@ -181,7 +206,7 @@ export function CreateWizard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-4xl mx-auto">
       <Card className="px-5 py-5 sm:px-8">
         <Stepper
           steps={STEPS}
@@ -191,65 +216,86 @@ export function CreateWizard() {
         />
       </Card>
 
-      <Card className="animate-fade-in p-6 sm:p-8" key={step}>
-        {step === 0 && <StepConfig form={form} set={set} />}
-        {step === 1 && <StepContent form={form} set={set} />}
-        {step === 2 && (
-          <StepStyle
-            form={form}
-            set={set}
-            styles={availableStyles}
-          />
-        )}
-        {step === 3 && (
-          <StepCaption
-            form={form}
-            set={set}
-            limit={captionLimit}
-            ideas={captionIdeas}
-            loading={genningCaption}
-            onSuggest={suggestCaption}
-          />
-        )}
-        {step === 4 && (
-          <StepReview
-            form={form}
-            loadingPrompt={genningPrompt}
-            onRegenerate={generatePrompt}
-          />
-        )}
-      </Card>
+      <div className="relative">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, y: 15, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -15, filter: "blur(4px)" }}
+            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <Card className="p-6 sm:p-8">
+              {step === 0 && <StepConfig form={form} set={set} />}
+              {step === 1 && <StepContent form={form} set={set} />}
+              {step === 2 && (
+                <StepStyle
+                  form={form}
+                  set={set}
+                  styles={availableStyles}
+                />
+              )}
+              {step === 3 && (
+                <StepCaption
+                  form={form}
+                  set={set}
+                  limit={captionLimit}
+                  ideas={captionIdeas}
+                  loading={genningCaption}
+                  onSuggest={suggestCaption}
+                />
+              )}
+              {step === 4 && (
+                <StepReview
+                  form={form}
+                  loadingPrompt={genningPrompt}
+                  onRegenerate={generatePrompt}
+                />
+              )}
+            </Card>
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-4">
         <Button
           variant="ghost"
           onClick={back}
           disabled={step === 0}
-          className={cn(step === 0 && "invisible")}
+          className={cn(step === 0 && "invisible", "group active:scale-[0.98] transition-all")}
         >
-          <ArrowLeft className="h-4 w-4" /> Quay lại
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-all duration-300 group-hover:-translate-x-1">
+            <ArrowLeft className="h-3.5 w-3.5" />
+          </div>
+          Quay lại
         </Button>
 
         {step < STEPS.length - 1 ? (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {missing.length > 0 && (
-              <span className="hidden text-xs text-slate-400 sm:block">
+              <span className="hidden text-xs text-slate-500 sm:block">
                 Còn thiếu: {missing.join(", ")}
               </span>
             )}
-            <Button onClick={next} disabled={!canNext}>
-              Tiếp tục <ArrowRight className="h-4 w-4" />
+            <Button onClick={next} disabled={!canNext} className="pl-6 pr-2 py-2 group active:scale-[0.98] transition-all duration-300">
+              Tiếp tục
+              <div className="ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/10 group-hover:bg-black/20 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-[1px] group-hover:scale-105">
+                <ArrowRight className="h-4 w-4" />
+              </div>
             </Button>
           </div>
         ) : (
-          <Button onClick={submit} disabled={submitting} size="lg">
+          <Button onClick={submit} disabled={submitting} size="lg" className="pl-6 pr-2 py-2 group active:scale-[0.98] transition-all duration-300">
             {submitting ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" /> Đang gửi...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Đang xử lý...
               </>
             ) : (
               <>
-                <Sparkles className="h-4 w-4" /> Tạo video & lên lịch
+                Tạo & Lên lịch
+                <div className="ml-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/10 group-hover:bg-black/20 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-[1px] group-hover:scale-105">
+                  <Sparkles className="h-4 w-4" />
+                </div>
               </>
             )}
           </Button>
@@ -267,13 +313,15 @@ function StepConfig({
   form: CreateVideoForm;
   set: <K extends keyof CreateVideoForm>(k: K, v: CreateVideoForm[K]) => void;
 }) {
-  const durations = form.videoType ? DURATIONS[form.videoType] : [];
   return (
     <div className="space-y-7">
-      <Header
-        title="Cấu hình cơ bản"
-        subtitle="Chọn loại video, kênh đăng và thời điểm bạn muốn xuất bản."
-      />
+      <div className="space-y-1 mb-8">
+        <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">Bước 1</span>
+        <Header
+          title="Cấu hình cơ bản"
+          subtitle="Chọn loại video, kênh đăng và thời điểm bạn muốn xuất bản."
+        />
+      </div>
 
       <Field label="Loại video" required>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -285,8 +333,8 @@ function StepConfig({
               set("styleId", null);
             }}
             title="Giải trí"
-            description="30 / 60 / 90 giây"
-            icon={<Clapperboard className="h-5 w-5 text-sky-400" />}
+            description="Video giải trí, review, vlog..."
+            icon={<span className="text-2xl drop-shadow-md">🎬</span>}
           />
           <OptionCard
             selected={form.videoType === "ads"}
@@ -296,8 +344,8 @@ function StepConfig({
               set("styleId", null);
             }}
             title="Quảng cáo"
-            description="15 / 30 / 60 giây"
-            icon={<Megaphone className="h-5 w-5 text-fuchsia-400" />}
+            description="Quảng bá sản phẩm, dịch vụ"
+            icon={<span className="text-2xl drop-shadow-md">📢</span>}
           />
         </div>
       </Field>
@@ -338,23 +386,18 @@ function StepConfig({
         </Field>
       </div>
 
-      <Field label="Thời lượng" required hint="giây">
-        <div className="flex flex-wrap gap-3">
-          {durations.length === 0 && (
-            <p className="text-sm text-slate-500">
-              Chọn loại video để xem các mức thời lượng.
-            </p>
-          )}
-          {durations.map((d) => (
+      <Field label="Thời lượng dự kiến" required hint="giây">
+        <div className="flex flex-wrap gap-2.5">
+          {DURATIONS.map((d) => (
             <button
               key={d}
               type="button"
               onClick={() => set("duration", d)}
               className={cn(
-                "h-11 w-20 rounded-xl border text-sm font-semibold transition-all",
+                "h-10 px-4 rounded-full border text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
                 form.duration === d
-                  ? "border-indigo-400/60 bg-gradient-to-br from-sky-500/15 to-fuchsia-500/15 text-white ring-2 ring-indigo-500/30"
-                  : "border-white/10 bg-white/[0.03] text-slate-300 hover:border-white/25"
+                  ? "border-white bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                  : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:bg-white/[0.05]"
               )}
             >
               {d}s
@@ -440,32 +483,32 @@ function StepStyle({
         {styles.map((s) => {
           const selected = form.styleId === s.id;
           return (
-            <button
+              <button
               key={s.id}
               type="button"
               onClick={() => set("styleId", s.id)}
               className={cn(
-                "group overflow-hidden rounded-2xl border text-left transition-all duration-150",
+                "group relative overflow-hidden rounded-[1.5rem] border text-left transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1",
                 selected
-                  ? "border-indigo-400/60 ring-2 ring-indigo-500/30"
-                  : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:-translate-y-0.5"
+                  ? "border-white/20 bg-white/[0.08] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),_0_8px_20px_rgba(255,255,255,0.05)]"
+                  : "border-white/5 bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]"
               )}
             >
               <div
                 className={cn(
-                  "flex h-28 items-center justify-center bg-gradient-to-br text-4xl",
+                  "flex h-32 items-center justify-center bg-gradient-to-br text-5xl transition-transform duration-500 group-hover:scale-105",
                   s.gradient
                 )}
               >
                 {s.emoji}
               </div>
-              <div className="space-y-1 p-4">
+              <div className="space-y-1.5 p-5">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-slate-100">
+                  <h4 className="text-sm font-semibold text-slate-100 transition-colors group-hover:text-white">
                     {s.name}
                   </h4>
                   {selected && (
-                    <CheckCircle2 className="h-4 w-4 text-indigo-400" />
+                    <CheckCircle2 className="h-5 w-5 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
                   )}
                 </div>
                 <p className="text-xs leading-relaxed text-slate-400">
@@ -589,7 +632,7 @@ function StepReview({
         <Summary label="Loại video" value={form.videoType === "ads" ? "Quảng cáo" : "Giải trí"} />
         <Summary label="Kênh đăng" value={form.channel === "facebook" ? "Facebook" : "TikTok"} />
         <Summary label="Lịch đăng" value={`${form.scheduledDate} · ${form.scheduledTime}`} />
-        <Summary label="Thời lượng" value={`${form.duration}s`} />
+        <Summary label="Thời lượng" value={form.duration ? `${form.duration}s` : "-"} />
         <Summary label="Phong cách" value={style?.name ?? "-"} />
         <Summary label="Số ảnh đính kèm" value={`${form.images.length} ảnh`} />
       </div>
@@ -665,6 +708,8 @@ function SuccessScreen({
   form: CreateVideoForm;
   onReset: () => void;
 }) {
+  const router = useRouter();
+
   return (
     <Card className="animate-fade-in p-10 text-center">
       <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 ring-1 ring-emerald-400/30">
@@ -674,16 +719,19 @@ function SuccessScreen({
         Đã gửi yêu cầu thành công!
       </h2>
       <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
-        Video đang được tạo bằng ViMax. Hệ thống sẽ tự động đăng lên{" "}
+        Video đang được tạo bằng MarkX. Hệ thống sẽ tự động đăng lên{" "}
         {form.channel === "facebook" ? "Facebook" : "TikTok"} vào{" "}
         <span className="font-medium text-slate-200">
           {form.scheduledDate} lúc {form.scheduledTime}
         </span>
         .
       </p>
-      <div className="mt-7">
-        <Button onClick={onReset}>
-          <Sparkles className="h-4 w-4" /> Tạo video mới
+      <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <Button onClick={onReset} className="group active:scale-[0.98] transition-all">
+          <Sparkles className="h-4 w-4 mr-2" /> Tạo video mới
+        </Button>
+        <Button variant="outline" onClick={() => router.push("/history")} className="group active:scale-[0.98] transition-all">
+          Xem lịch sử
         </Button>
       </div>
     </Card>

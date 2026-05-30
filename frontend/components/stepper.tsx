@@ -10,36 +10,47 @@ interface StepperProps {
 
 export function Stepper({ steps, current, onStepClick, maxReached }: StepperProps) {
   return (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex w-full items-start justify-between relative px-2">
+      {/* Background Line */}
+      <div className="absolute top-[18px] left-[10%] right-[10%] h-px bg-white/[0.05] -z-10" />
+
       {steps.map((label, i) => {
         const done = i < current;
         const active = i === current;
         const clickable = i <= maxReached;
+
         return (
-          <div key={label} className="flex items-center flex-1 last:flex-none">
+          <div key={label} className="flex flex-col items-center flex-1">
             <button
               type="button"
               disabled={!clickable}
               onClick={() => clickable && onStepClick?.(i)}
               className={cn(
-                "flex items-center gap-2.5 group",
+                "group relative flex flex-col items-center outline-none",
                 clickable ? "cursor-pointer" : "cursor-not-allowed"
               )}
             >
+              {/* Active Glow */}
+              {active && (
+                <div className="absolute top-0 h-9 w-9 rounded-full bg-white/20 blur-md" />
+              )}
+
+              {/* Number/Check Circle */}
               <span
                 className={cn(
-                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition-all duration-200",
-                  done && "bg-gradient-to-br from-sky-500 to-fuchsia-500 text-white",
-                  active &&
-                    "bg-gradient-to-br from-sky-500 to-fuchsia-500 text-white ring-4 ring-indigo-500/25",
-                  !done && !active && "bg-white/[0.06] text-slate-500 border border-white/10"
+                  "relative flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ring-4 ring-[#050505]",
+                  done && "bg-white text-black",
+                  active && "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)]",
+                  !done && !active && "bg-[#0a0a0a] text-slate-500 border border-white/10 group-hover:border-white/30"
                 )}
               >
                 {done ? <Check className="h-4 w-4" /> : i + 1}
               </span>
+
+              {/* Label */}
               <span
                 className={cn(
-                  "hidden text-sm font-medium sm:block transition-colors",
+                  "mt-3 text-[13px] font-medium transition-colors duration-300 whitespace-nowrap",
                   active ? "text-white" : "text-slate-500",
                   done && "text-slate-300"
                 )}
@@ -47,16 +58,6 @@ export function Stepper({ steps, current, onStepClick, maxReached }: StepperProp
                 {label}
               </span>
             </button>
-            {i < steps.length - 1 && (
-              <div className="mx-2 h-px flex-1 bg-white/10 sm:mx-4">
-                <div
-                  className={cn(
-                    "h-full bg-gradient-to-r from-sky-500 to-fuchsia-500 transition-all duration-300",
-                    done ? "w-full" : "w-0"
-                  )}
-                />
-              </div>
-            )}
           </div>
         );
       })}

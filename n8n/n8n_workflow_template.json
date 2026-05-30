@@ -1,0 +1,180 @@
+{
+  "name": "Auto Video Platform Workflow (Upload Only)",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "scheduled-post",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook (Receive Video from Backend)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{$json.body.channel}}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "facebook",
+              "output": 0
+            },
+            {
+              "value2": "tiktok",
+              "output": 1
+            }
+          ]
+        }
+      },
+      "name": "Switch Channel",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v19.0/{{$json.body.page_id}}/videos",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_url",
+              "value": "={{$node[\"Webhook (Receive Video from Backend)\"].json.body.video_url}}"
+            },
+            {
+              "name": "description",
+              "value": "={{$node[\"Webhook (Receive Video from Backend)\"].json.body.caption}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Facebook Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        650,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://open.tiktokapis.com/v2/post/publish/video/init/",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "video_url",
+              "value": "={{$node[\"Webhook (Receive Video from Backend)\"].json.body.video_url}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "TikTok Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        650,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$node[\"Webhook (Receive Video from Backend)\"].json.body.callback_url}}",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "sheet_id",
+              "value": "={{$node[\"Webhook (Receive Video from Backend)\"].json.body.sheet_id}}"
+            },
+            {
+              "name": "status",
+              "value": "done"
+            },
+            {
+              "name": "video_url",
+              "value": "={{$node[\"Webhook (Receive Video from Backend)\"].json.body.video_url}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Callback to Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        900,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook (Receive Video from Backend)": {
+      "main": [
+        [
+          {
+            "node": "Switch Channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Channel": {
+      "main": [
+        [
+          {
+            "node": "Facebook Post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "TikTok Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Post": {
+      "main": [
+        [
+          {
+            "node": "Callback to Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Post": {
+      "main": [
+        [
+          {
+            "node": "Callback to Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

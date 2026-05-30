@@ -32,11 +32,11 @@ function mockPrompt(b: PromptBody): string {
   const extra = b.useGoogleData
     ? `\n- Lồng ghép thông tin & trend mới nhất về "${b.searchKeyword || b.content}".`
     : "";
-  return `Tạo video ${kind} thời lượng ${b.duration ?? 60} giây.
+  return `Tạo video ${kind} thời lượng ${b.duration ?? "60"} giây.
 
 Ý tưởng gốc: ${b.content}
 
-Chỉ đạo sản xuất (ViMax):
+Chỉ đạo sản xuất (MarkX):
 - Hook 3 giây đầu gây tò mò, giữ chân người xem.
 - Nhịp cắt cảnh nhanh, bám theo phong cách đã chọn.
 - Text overlay ngắn gọn, nổi bật ở các điểm nhấn.${cameo}${extra}

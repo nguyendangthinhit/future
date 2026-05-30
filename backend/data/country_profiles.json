@@ -1,0 +1,92 @@
+{
+  "VN": {
+    "country_code": "VN",
+    "country_name": "Việt Nam",
+    "hook_style": "Giật gân, câu hỏi tò mò trong 3s đầu, drama",
+    "pacing": "Nhanh, cắt cảnh liên tục (fast-paced)",
+    "visual_vibe": "Màu sắc nổi bật, text to giữa màn hình",
+    "preferred_music": "Trending TikTok, VinaHouse remix",
+    "description": "Người xem dễ mất kiên nhẫn. Thích giải trí, review thực tế."
+  },
+  "US": {
+    "country_code": "US",
+    "country_name": "United States",
+    "hook_style": "Trực diện, nêu vấn đề ngay giây đầu tiên",
+    "pacing": "Vừa phải, phong cách vlog chân thực",
+    "visual_vibe": "Màu sắc điện ảnh (cinematic), font chữ mỏng, sang trọng",
+    "preferred_music": "Lo-fi, Pop trending, Hip-hop",
+    "description": "Ưu tiên nội dung có giá trị, kể chuyện (storytelling) tốt."
+  },
+  "TH": {
+    "country_code": "TH",
+    "country_name": "Thailand",
+    "hook_style": "Hài hước, lố (exaggerated), bất ngờ",
+    "pacing": "Rất nhanh, chuyển cảnh sáng tạo",
+    "visual_vibe": "Sặc sỡ, meme style",
+    "preferred_music": "Nhạc pop Thái, hiệu ứng âm thanh (sound effects) liên tục",
+    "description": "Khán giả chuộng nội dung hài hước, quảng cáo kiểu Thái."
+  },
+  "ID": {
+    "country_code": "ID",
+    "country_name": "Indonesia",
+    "hook_style": "Cảm xúc, gần gũi",
+    "pacing": "Vừa phải",
+    "visual_vibe": "Tự nhiên, sáng",
+    "preferred_music": "Nhạc Pop Indo, Dangdut",
+    "description": "Thích nội dung gia đình, cộng đồng, review ăn uống."
+  },
+  "JP": {
+    "country_code": "JP",
+    "country_name": "Japan",
+    "hook_style": "Bí ẩn, ASMR, nhẹ nhàng",
+    "pacing": "Chậm rãi, tập trung vào chi tiết",
+    "visual_vibe": "Màu pastel, tối giản (minimalist), anime style",
+    "preferred_music": "City pop, Acoustic, Kawaii",
+    "description": "Trân trọng tính thẩm mỹ, văn hóa truyền thống xen lẫn hiện đại."
+  },
+  "KR": {
+    "country_code": "KR",
+    "country_name": "South Korea",
+    "hook_style": "Visual đỉnh cao, người đẹp, đồ ăn hấp dẫn",
+    "pacing": "Nhanh, beat sync",
+    "visual_vibe": "Neon, futuristic, sạch sẽ",
+    "preferred_music": "K-pop",
+    "description": "Trend thay đổi rất nhanh, chuộng làm đẹp, thời trang."
+  },
+  "PH": {
+    "country_code": "PH",
+    "country_name": "Philippines",
+    "hook_style": "Gần gũi, hát nhép (lip-sync), khiêu vũ",
+    "pacing": "Sôi động",
+    "visual_vibe": "Đầy màu sắc",
+    "preferred_music": "Pop, R&B, Tiktok dance trends",
+    "description": "Người xem rất tích cực tương tác, thích âm nhạc và nhảy múa."
+  },
+  "BR": {
+    "country_code": "BR",
+    "country_name": "Brazil",
+    "hook_style": "Năng lượng cao, vui nhộn",
+    "pacing": "Rất nhanh",
+    "visual_vibe": "Nhiệt đới, bão hòa cao",
+    "preferred_music": "Funk, Samba, Reggaeton",
+    "description": "Giao tiếp nhiều bằng cơ thể, hài hước, bóng đá."
+  },
+  "GB": {
+    "country_code": "GB",
+    "country_name": "United Kingdom",
+    "hook_style": "Hài hước mỉa mai (Sarcasm), tinh tế",
+    "pacing": "Vừa phải",
+    "visual_vibe": "Tông lạnh, chân thực (gritty)",
+    "preferred_music": "UK Drill, Indie, Grime",
+    "description": "Thích bình luận xã hội, châm biếm, review ẩm thực đường phố."
+  },
+  "IN": {
+    "country_code": "IN",
+    "country_name": "India",
+    "hook_style": "Cảm xúc mạnh, kịch tính",
+    "pacing": "Nhanh, nhiều hiệu ứng",
+    "visual_vibe": "Màu ấm, sặc sỡ, nhiều chữ",
+    "preferred_music": "Bollywood, Bhangra",
+    "description": "Số lượng khán giả khổng lồ, đa dạng ngôn ngữ, thích drama."
+  }
+}

@@ -51,10 +51,16 @@ export const STYLES: StyleOption[] = [
   },
 ];
 
-export const DURATIONS: Record<VideoType, number[]> = {
-  entertainment: [30, 60, 90],
-  ads: [15, 30, 60],
-};
+export const DURATIONS: string[] = [
+  "10-20",
+  "20-30",
+  "30-40",
+  "40-50",
+  "50-60",
+  "60-70",
+  "70-80",
+  "80-90",
+];
 
 export const stylesFor = (type: VideoType | null) =>
   !type

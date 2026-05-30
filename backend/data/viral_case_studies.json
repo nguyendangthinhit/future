@@ -1,0 +1,20 @@
+[
+  {
+    "country": "VN",
+    "title": "Review quán ăn lề đường",
+    "description": "Video 30s cắt ghép rất nhanh. Mở đầu bằng âm thanh lớn, câu hỏi 'Chỉ với 10k ăn được gì?'. Giữa video chèn meme. Kết thúc kêu gọi thả tim.",
+    "key_elements": ["Fast cuts", "Shocking price hook", "Meme inserts"]
+  },
+  {
+    "country": "US",
+    "title": "A Day in the Life of a Software Engineer",
+    "description": "Video 60s, nhạc Lo-fi. Mở đầu bằng tiếng ly cà phê. Giọng đọc nhẹ nhàng kể về quá trình làm việc, góc quay đẹp.",
+    "key_elements": ["Aesthetic shots", "Calm voiceover", "Lo-fi music"]
+  },
+  {
+    "country": "TH",
+    "title": "Quảng cáo kem đánh răng hài hước",
+    "description": "Quảng cáo 90s, diễn viên làm nũng (overacting), tình huống vô lý tột độ. Kết thúc bằng thông điệp sản phẩm bất ngờ.",
+    "key_elements": ["Absurd humor", "Plot twist", "Exaggerated acting"]
+  }
+]
