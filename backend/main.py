@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 # loaded first or they capture None and silently fall back to mock mode.
 load_dotenv()
 
-from routers import video, verify, dashboard, trending, caption
+from routers import video, verify, dashboard, trending, caption, research
 from services.scheduler import start_scheduler
 
 app = FastAPI(title="Auto Video Platform API", version="1.0.0")
@@ -41,6 +41,7 @@ app.include_router(verify.router,    prefix="/api/v1/verify",    tags=["Verify"]
 app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["Dashboard"])
 app.include_router(trending.router,  prefix="/api/v1/trending",  tags=["Trending"])
 app.include_router(caption.router,   prefix="/api/v1/caption",   tags=["Caption"])
+app.include_router(research.router,  prefix="/api/v1/research",  tags=["Research"])
 
 @app.on_event("startup")
 async def startup_event():

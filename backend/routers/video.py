@@ -5,6 +5,7 @@ from services.sheets import create_video_record, update_video_status, get_all_vi
 from services.drive_service import upload_image
 from services.serper import search_google
 from services.ecomdy import generate_video, poll_video_status
+from services.research import run_research_sync
 import httpx, os, json
 import asyncio
 
@@ -19,6 +20,7 @@ class PreviewPromptRequest(BaseModel):
     country_code: str = "VN"
     use_google_data: bool = False
     search_keyword: str = ""
+    research_brief: str = ""
 
 
 def _format_prompt(script: dict, director: dict) -> str:
@@ -67,8 +69,12 @@ def preview_prompt(req: PreviewPromptRequest):
     Dùng để xem trước chất lượng prompt trên web trước khi tạo video thật."""
     try:
         extra_data = ""
-        if req.use_google_data and req.search_keyword:
-            extra_data = search_google(req.search_keyword)
+        if req.research_brief:
+            extra_data = req.research_brief
+        elif req.use_google_data and req.search_keyword:
+            import json as _json
+            brief = run_research_sync(req.search_keyword, req.content, req.duration)
+            extra_data = _json.dumps(brief, ensure_ascii=False)
 
         result = run_full_pipeline(
             raw_content=req.content,
@@ -81,11 +87,14 @@ def preview_prompt(req: PreviewPromptRequest):
         )
         script = result.get("script", {})
         director = result.get("director_output", {})
+        
+        from services.api_key_manager import gemini_key_manager
+        
         return {
             "prompt": _format_prompt(script, director),
             "script": script,
             "director_output": director,
-            "source": "gemini" if os.getenv("GEMINI_API_KEY") else "mock",
+            "source": "gemini" if gemini_key_manager.get_api_key() else "mock",
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -188,6 +197,7 @@ async def create_video(
     country_code: str = Form(default="VN"),
     use_google_data: bool = Form(default=False),
     search_keyword: str = Form(default=""),
+    research_brief: str = Form(default=""),
     mascot_image: UploadFile = File(default=None),
 ):
     try:
@@ -198,8 +208,12 @@ async def create_video(
 
         # 2. Lấy data Google nếu user yêu cầu
         extra_data = ""
-        if use_google_data and search_keyword:
-            extra_data = search_google(search_keyword)
+        if research_brief:
+            extra_data = research_brief
+        elif use_google_data and search_keyword:
+            import json as _json
+            brief = run_research_sync(search_keyword, raw_content, duration)
+            extra_data = _json.dumps(brief, ensure_ascii=False)
 
         # 3. Tạo record rỗng (trạng thái pending) trong Sheet
         record_data = {

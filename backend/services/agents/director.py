@@ -1,12 +1,10 @@
 import google.generativeai as genai
 import os, json
 
+from services.api_key_manager import gemini_key_manager
+
 def get_model():
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key or api_key == "your_gemini_api_key_here":
-        return None
-    genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-2.5-flash")
+    return gemini_key_manager.get_model()
 
 def run_director(
     script: dict,
@@ -20,23 +18,6 @@ def run_director(
     Output: Camera Prompts chuyên dụng cho Ecomdy API
     """
     
-    model = get_model()
-    if not model:
-        # Mock response if no API key
-        return {
-            "kling_prompts": [
-                {
-                    "scene_id": 1,
-                    "duration_seconds": 5,
-                    "prompt": "Mock camera prompt",
-                    "negative_prompt": "ugly, blurry"
-                }
-            ],
-            "global_style_prompt": "Mock global style",
-            "recommended_aspect_ratio": "9:16",
-            "mascot_image_url": mascot_image_url or ""
-        }
-        
     mascot_section = ""
     if mascot_image_url:
         mascot_section = f"""
@@ -82,7 +63,23 @@ Mỗi Prompt phải bao gồm: loại cảnh quay (shot type) + chuyển động
 }}
 """
     
-    response = model.generate_content(prompt)
+    response = gemini_key_manager.generate_content_with_retry(prompt)
+    if not response:
+        # Mock response if no API key or generation failed completely
+        return {
+            "kling_prompts": [
+                {
+                    "scene_id": 1,
+                    "duration_seconds": 5,
+                    "prompt": "Mock camera prompt",
+                    "negative_prompt": "ugly, blurry"
+                }
+            ],
+            "global_style_prompt": "Mock global style",
+            "recommended_aspect_ratio": "9:16",
+            "mascot_image_url": mascot_image_url or ""
+        }
+
     text = response.text.strip()
     
     if "```json" in text:
