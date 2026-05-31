@@ -7,7 +7,7 @@ def get_model():
         print("Warning: GEMINI_API_KEY is not set. Using mock model.")
         return None
     genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-1.5-pro")
+    return genai.GenerativeModel("gemini-2.5-flash")
 
 def run_scriptwriter(
     raw_content: str,

@@ -15,7 +15,7 @@ class CaptionRequest(BaseModel):
 async def generate_caption(req: CaptionRequest):
     try:
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel("gemini-1.5-pro")
+        model = genai.GenerativeModel("gemini-2.5-flash")
         
         prompt = f"""
         Bạn là một chuyên gia sáng tạo nội dung mạng xã hội.

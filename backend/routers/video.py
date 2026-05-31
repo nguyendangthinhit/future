@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks
+from pydantic import BaseModel
 from services.agents.pipeline import run_full_pipeline
 from services.sheets import create_video_record, update_video_status, get_all_videos
 from services.drive_service import upload_image
@@ -8,6 +9,86 @@ import httpx, os, json
 import asyncio
 
 router = APIRouter()
+
+
+class PreviewPromptRequest(BaseModel):
+    content: str
+    video_type: str = "entertainment"
+    style_name: str = ""
+    duration: int = 60
+    country_code: str = "VN"
+    use_google_data: bool = False
+    search_keyword: str = ""
+
+
+def _format_prompt(script: dict, director: dict) -> str:
+    """Gộp output 2 agent thành 1 block text dễ đọc để hiển thị trên web."""
+    lines = []
+    if script.get("title"):
+        lines.append(f"🎬 TIÊU ĐỀ: {script['title']}")
+    if script.get("hook_instruction"):
+        lines.append(f"\n🪝 HOOK (0-5s): {script['hook_instruction']}")
+
+    scenes = script.get("scenes", [])
+    if scenes:
+        lines.append("\n📝 KỊCH BẢN THEO CẢNH:")
+        for s in scenes:
+            lines.append(f"  • [{s.get('timestamp','')}] {s.get('action','')}")
+            if s.get("dialogue"):
+                lines.append(f"      Thoại: {s['dialogue']}")
+            if s.get("text_overlay"):
+                lines.append(f"      Text overlay: {s['text_overlay']}")
+
+    if script.get("background_music_mood"):
+        lines.append(f"\n🎵 NHẠC NỀN: {script['background_music_mood']}")
+    if script.get("cta"):
+        lines.append(f"📣 CTA: {script['cta']}")
+
+    if director.get("global_style_prompt"):
+        lines.append(f"\n🎨 GLOBAL STYLE PROMPT:\n{director['global_style_prompt']}")
+
+    ecomdy_prompts = director.get("ecomdy_prompts", [])
+    if ecomdy_prompts:
+        lines.append("\n🎥 CAMERA PROMPTS (gửi sang engine render):")
+        for p in ecomdy_prompts:
+            lines.append(f"  • Scene {p.get('scene_id','')} ({p.get('duration_seconds','')}s): {p.get('prompt','')}")
+            if p.get("negative_prompt"):
+                lines.append(f"      Negative: {p['negative_prompt']}")
+
+    if director.get("recommended_aspect_ratio"):
+        lines.append(f"\n📐 Tỉ lệ khung hình đề xuất: {director['recommended_aspect_ratio']}")
+
+    return "\n".join(lines).strip()
+
+
+@router.post("/preview-prompt")
+def preview_prompt(req: PreviewPromptRequest):
+    """Chạy CHỈ 2 agent (biên kịch + đạo diễn) và trả prompt — KHÔNG render, KHÔNG ghi Sheet.
+    Dùng để xem trước chất lượng prompt trên web trước khi tạo video thật."""
+    try:
+        extra_data = ""
+        if req.use_google_data and req.search_keyword:
+            extra_data = search_google(req.search_keyword)
+
+        result = run_full_pipeline(
+            raw_content=req.content,
+            country_code=req.country_code,
+            style_name=req.style_name,
+            duration=req.duration,
+            video_type=req.video_type,
+            extra_data=extra_data,
+            mascot_image_url=None,
+        )
+        script = result.get("script", {})
+        director = result.get("director_output", {})
+        return {
+            "prompt": _format_prompt(script, director),
+            "script": script,
+            "director_output": director,
+            "source": "gemini" if os.getenv("GEMINI_API_KEY") else "mock",
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 async def process_video_background(
     record_id: str,
@@ -34,14 +115,28 @@ async def process_video_background(
         )
         
         director_output = pipeline_result.get("director_output", {})
-        
+
         # Cập nhật Sheet: Đang render Ecomdy
         update_video_status(record_id, "processing")
-        
+
         # 2. Gửi request tạo video lên Ecomdy
+        # Engine Ecomdy là image-to-video (Symphony/TikTok AIGC) -> BẮT BUỘC có image_url.
+        image_url = (
+            mascot_image_url
+            or director_output.get("mascot_image_url")
+            or ""
+        )
+        if not image_url:
+            raise Exception(
+                "Ecomdy yêu cầu image_url (engine image-to-video) nhưng không có ảnh mascot. "
+                "Hãy đính kèm mascot_image khi gọi /create."
+            )
+
         ecomdy_payload = {
+            "image_url": image_url,
             "prompt": director_output.get("global_style_prompt", ""),
-            "kling_prompts": director_output.get("ecomdy_prompts", [])
+            "aspect_ratio": director_output.get("recommended_aspect_ratio", "9:16"),
+            "kling_prompts": director_output.get("ecomdy_prompts", []),
         }
         
         print(f"[{record_id}] Bắt đầu gọi Ecomdy API...")

@@ -21,6 +21,12 @@ frontend/api_key.txt
 .env
 .env*.local
 
+# Google service account key — TUYỆT ĐỐI không commit
+service_account.json
+backend/service_account.json
+*service_account*.json
+*-credentials.json
+
 # Documentation
 doc/
 
@@ -28,6 +34,10 @@ doc/
 venv/
 backend/venv/
 frontend/node_modules/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
 
 # OS
 .DS_Store
