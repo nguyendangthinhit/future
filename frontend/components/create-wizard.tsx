@@ -118,6 +118,8 @@ export function CreateWizard() {
   async function generatePrompt() {
     setGenningPrompt(true);
     try {
+      const styleName =
+        availableStyles.find((s) => s.id === form.styleId)?.name || "";
       const res = await fetch("/api/prompt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -126,6 +128,7 @@ export function CreateWizard() {
           videoType: form.videoType,
           duration: form.duration,
           styleId: form.styleId,
+          styleName,
           useGoogleData: form.useGoogleData,
           searchKeyword: form.searchKeyword,
           hasImages: form.images.length > 0,
