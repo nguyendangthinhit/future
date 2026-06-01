@@ -46,10 +46,11 @@ Chi tiết từng cảnh:
 === NHIỆM VỤ ===
 Dịch từng cảnh trong kịch bản thành Camera Prompt tiếng Anh chuyên dụng cho Ecomdy API.
 Mỗi Prompt phải bao gồm: loại cảnh quay (shot type) + chuyển động camera + ánh sáng + màu sắc + tốc độ.
-🚨 QUAN TRỌNG NHẤT (CHỐNG LỖI TIẾNG TRUNG):
-- KHÔNG ĐƯỢC đưa yêu cầu tạo chữ, text overlay, hay đoạn thoại vào "prompt" tiếng Anh. Engine video AI (Kling/Symphony) sẽ bị lỗi và sinh ra chữ tiếng Trung hoặc ký tự rác.
-- Trong "negative_prompt", BẮT BUỘC phải luôn có: "text, watermark, typography, subtitles, letters, chinese characters".
-- Chỉ miêu tả HÀNH ĐỘNG, BỐI CẢNH, và CẢM XÚC. Việc chèn chữ và âm thanh sẽ được editor làm ở khâu hậu kỳ.
+🚨 LƯU Ý VỀ TEXT OVERLAY (CHỮ TRÊN VIDEO):
+- Nếu muốn chèn chữ, CHỈ NÊN dùng tiếng Anh siêu ngắn gọn (VD: "SALE", "WOW", "50% OFF").
+- TUYỆT ĐỐI KHÔNG yêu cầu AI render tiếng Việt có dấu. Các engine (như Kling/Symphony) sẽ render lỗi phông và biến thành chữ tiếng Trung Quốc.
+- Nếu kịch bản yêu cầu chữ tiếng Việt, hãy dời việc đó vào phần hậu kỳ (không đưa vào prompt của engine).
+- Chỉ miêu tả HÀNH ĐỘNG, BỐI CẢNH, và CẢM XÚC là chính.
 
 === OUTPUT JSON ===
 {{
