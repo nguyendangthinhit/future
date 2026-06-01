@@ -98,7 +98,9 @@ def preview_prompt(req: PreviewPromptRequest):
             "source": "gemini" if gemini_key_manager.get_api_key() else "mock",
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        import traceback
+        print(f"[preview-prompt] ERROR: {e}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Lỗi server: {str(e)}")
 
 async def process_video_background(
     record_id: str,
@@ -254,7 +256,9 @@ async def create_video(
         }
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        import traceback
+        print(f"[/create] ERROR: {e}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Lỗi server: {str(e)}")
 
 @router.post("/callback")
 async def video_callback(data: dict):

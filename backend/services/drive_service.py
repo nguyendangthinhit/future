@@ -39,11 +39,13 @@ async def upload_image(file: UploadFile) -> str:
         }
         media = MediaIoBaseUpload(io.BytesIO(contents), mimetype=file.content_type or "image/png", resumable=True)
         
-        # Upload file
+        # supportsAllDrives=True cho phép upload vào folder của user (shared với SA)
+        # hoặc Shared Drive. Đây là fix cho lỗi storageQuotaExceeded của SA.
         uploaded_file = service.files().create(
             body=file_metadata,
             media_body=media,
-            fields="id"
+            fields="id",
+            supportsAllDrives=True,
         ).execute()
         
         file_id = uploaded_file.get("id")
@@ -51,7 +53,8 @@ async def upload_image(file: UploadFile) -> str:
         # Share công khai để AI Engine có thể tải về
         service.permissions().create(
             fileId=file_id,
-            body={"type": "anyone", "role": "reader"}
+            body={"type": "anyone", "role": "reader"},
+            supportsAllDrives=True,
         ).execute()
         
         # Link tải trực tiếp
@@ -60,5 +63,34 @@ async def upload_image(file: UploadFile) -> str:
         return direct_url
         
     except Exception as e:
+        error_str = str(e)
+        # Nếu vẫn lỗi quota (SA không có storage) → thử imgbb nếu có key
+        if "storageQuotaExceeded" in error_str or "quota" in error_str.lower():
+            print(f"⚠️ Drive quota lỗi. Thử imgbb fallback...")
+            imgbb_result = await _upload_to_imgbb(contents, file.filename or "upload.png")
+            if imgbb_result:
+                return imgbb_result
         print(f"⚠️ Google Drive upload exception: {e}. Dùng ảnh mặc định.")
         return FALLBACK_IMAGE_URL
+
+async def _upload_to_imgbb(contents: bytes, filename: str) -> str | None:
+    """Fallback: upload ảnh lên imgbb (free, no quota limit)."""
+    api_key = os.getenv("IMGBB_API_KEY")
+    if not api_key:
+        return None
+    try:
+        import httpx, base64
+        b64 = base64.b64encode(contents).decode("utf-8")
+        async with httpx.AsyncClient(timeout=30) as client:
+            res = await client.post(
+                "https://api.imgbb.com/1/upload",
+                data={"key": api_key, "image": b64, "name": filename},
+            )
+            data = res.json()
+            if data.get("success"):
+                url = data["data"]["url"]
+                print(f"✅ Ảnh đã upload lên imgbb: {url}")
+                return url
+    except Exception as e:
+        print(f"⚠️ imgbb upload lỗi: {e}")
+    return None
