@@ -48,4 +48,5 @@ async def generate_caption(req: CaptionRequest):
             
         return json.loads(text)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Lỗi khi parse caption từ Gemini: {e}")
+        return {"captions": [f"Gợi ý caption: {req.content[:50]}... (AI đang quá tải, vui lòng thử lại)"]}
