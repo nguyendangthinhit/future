@@ -213,7 +213,7 @@ export function CreateWizard() {
       setSubmitted(true);
     } catch (e) {
       console.error("Failed to create video:", e);
-      alert("Lỗi: " + (e.message || String(e)));
+      alert("Lỗi: " + (e instanceof Error ? e.message : String(e)));
     } finally {
       setSubmitting(false);
     }

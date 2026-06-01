@@ -31,6 +31,7 @@ export interface UploadedImage {
   name: string;
   dataUrl: string;
   size: number;
+  file?: File;
 }
 
 export interface CaptionSuggestion {

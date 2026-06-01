@@ -34,6 +34,7 @@ export function ImageUploader({
             name: file.name,
             dataUrl: reader.result as string,
             size: file.size,
+            file: file,
           },
         ]);
       };

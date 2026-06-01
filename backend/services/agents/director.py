@@ -67,7 +67,7 @@ Mỗi Prompt phải bao gồm: loại cảnh quay (shot type) + chuyển động
     if not response:
         # Mock response if no API key or generation failed completely
         return {
-            "kling_prompts": [
+            "ecomdy_prompts": [
                 {
                     "scene_id": 1,
                     "duration_seconds": 5,
