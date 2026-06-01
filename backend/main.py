@@ -20,7 +20,14 @@ load_dotenv()
 from routers import video, verify, dashboard, trending, caption, research
 from services.scheduler import start_scheduler
 
-app = FastAPI(title="Auto Video Platform API", version="1.0.0")
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    start_scheduler()  # Khởi động cron job khi server lên
+    yield
+
+app = FastAPI(title="Auto Video Platform API", version="1.0.0", lifespan=lifespan)
 
 # CORS – cho phép Next.js gọi sang
 app.add_middleware(
@@ -42,10 +49,6 @@ app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["Dashboar
 app.include_router(trending.router,  prefix="/api/v1/trending",  tags=["Trending"])
 app.include_router(caption.router,   prefix="/api/v1/caption",   tags=["Caption"])
 app.include_router(research.router,  prefix="/api/v1/research",  tags=["Research"])
-
-@app.on_event("startup")
-async def startup_event():
-    start_scheduler()  # Khởi động cron job khi server lên
 
 @app.get("/health")
 def health_check():
