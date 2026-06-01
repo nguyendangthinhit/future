@@ -14,8 +14,7 @@ class CaptionRequest(BaseModel):
 @router.post("/generate")
 async def generate_caption(req: CaptionRequest):
     try:
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel("gemini-2.5-flash")
+        from services.api_key_manager import gemini_key_manager
         
         prompt = f"""
         Bạn là một chuyên gia sáng tạo nội dung mạng xã hội.
@@ -37,7 +36,9 @@ async def generate_caption(req: CaptionRequest):
             ]
         }}
         """
-        response = model.generate_content(prompt)
+        response = gemini_key_manager.generate_content_with_retry(prompt)
+        if not response:
+            return {"captions": [f"Mock caption cho video {req.content[:20]}"]}
         text = response.text.strip()
         
         if "```json" in text:

@@ -18,6 +18,7 @@ import type {
   CaptionSuggestion,
   Channel,
   CreateVideoForm,
+  ResearchBrief,
   VideoType,
 } from "@/lib/types";
 import {
@@ -32,6 +33,7 @@ import {
   Loader2,
   CheckCircle2,
   RotateCcw,
+  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -55,6 +57,7 @@ const emptyForm: CreateVideoForm = {
   styleId: null,
   caption: "",
   generatedPrompt: "",
+  researchBrief: null,
 };
 
 export function CreateWizard() {
@@ -192,6 +195,15 @@ export function CreateWizard() {
       formData.append("country_code", "VN");
       formData.append("use_google_data", form.useGoogleData ? "true" : "false");
       formData.append("search_keyword", form.searchKeyword);
+
+      if (form.researchBrief) {
+        const filtered = {
+          ...form.researchBrief,
+          stages: form.researchBrief.stages.filter(s => s.enabled),
+          key_facts: form.researchBrief.key_facts.filter(f => f.enabled).map(f => f.text),
+        };
+        formData.append("research_brief", JSON.stringify(filtered));
+      }
       
       if (form.images.length > 0 && form.images[0].file) {
         formData.append("mascot_image", form.images[0].file);
@@ -431,6 +443,48 @@ function StepContent({
   form: CreateVideoForm;
   set: <K extends keyof CreateVideoForm>(k: K, v: CreateVideoForm[K]) => void;
 }) {
+  const [researching, setResearching] = useState(false);
+
+  const doResearch = async () => {
+    if (!form.searchKeyword.trim()) return;
+    setResearching(true);
+    try {
+      const res = await api.post("/research/preview", {
+        topic: form.searchKeyword,
+        focus_points: form.content,
+        duration: Number(form.duration) || 60,
+      });
+      const brief: ResearchBrief = {
+        topic: res.topic || form.searchKeyword,
+        summary: res.summary || "",
+        stages: (res.stages || []).map((s: any) => ({ ...s, enabled: true })),
+        key_facts: (res.key_facts || []).map((f: string) => ({ text: f, enabled: true })),
+      };
+      set("researchBrief", brief);
+    } catch (e) {
+      console.error(e);
+      alert("Lỗi khi tìm hiểu chủ đề. Vui lòng thử lại.");
+    } finally {
+      setResearching(false);
+    }
+  };
+
+  const updateStage = (id: number, field: string, value: any) => {
+    if (!form.researchBrief) return;
+    const stages = form.researchBrief.stages.map((s) =>
+      s.id === id ? { ...s, [field]: value } : s
+    );
+    set("researchBrief", { ...form.researchBrief, stages });
+  };
+
+  const updateFact = (idx: number, field: string, value: any) => {
+    if (!form.researchBrief) return;
+    const key_facts = form.researchBrief.key_facts.map((f, i) =>
+      i === idx ? { ...f, [field]: value } : f
+    );
+    set("researchBrief", { ...form.researchBrief, key_facts });
+  };
+
   return (
     <div className="space-y-7">
       <Header
@@ -453,16 +507,158 @@ function StepContent({
             checked={form.useGoogleData}
             onChange={(v) => set("useGoogleData", v)}
             label="Tự động bổ sung data từ Google"
-            description="Lấy thông tin & trend mới nhất để làm giàu kịch bản"
+            description="Tìm kiếm kiến thức nền về chủ đề để làm giàu kịch bản video"
           />
           {form.useGoogleData && (
-            <Field label="Từ khóa tìm kiếm">
-              <TextInput
-                placeholder="VD: cà phê Đà Nẵng 2026"
-                value={form.searchKeyword}
-                onChange={(e) => set("searchKeyword", e.target.value)}
-              />
-            </Field>
+            <div className="space-y-3">
+              <Field label="Từ khóa tìm kiếm">
+                <TextInput
+                  placeholder="VD: quá trình hình thành trái dừa"
+                  value={form.searchKeyword}
+                  onChange={(e) => set("searchKeyword", e.target.value)}
+                />
+              </Field>
+              <Button
+                variant="outline"
+                onClick={doResearch}
+                disabled={researching || !form.searchKeyword.trim()}
+              >
+                {researching ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Đang tìm hiểu...
+                  </>
+                ) : (
+                  <>
+                    <Search className="h-4 w-4 text-sky-400" /> Tìm hiểu chủ đề
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+
+          {form.researchBrief && (
+            <div className="mt-4 space-y-4 rounded-xl border border-sky-400/20 bg-gradient-to-br from-sky-500/[0.04] to-indigo-500/[0.04] p-4">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-semibold text-slate-200">
+                  Kết quả nghiên cứu: {form.researchBrief.topic}
+                </h4>
+                <Button variant="ghost" size="sm" onClick={doResearch} disabled={researching}>
+                  <RotateCcw className={cn("h-3.5 w-3.5", researching && "animate-spin")} />
+                  Tạo lại
+                </Button>
+              </div>
+
+              {form.researchBrief.summary && (
+                <textarea
+                  value={form.researchBrief.summary}
+                  onChange={(e) => set("researchBrief", { ...form.researchBrief!, summary: e.target.value })}
+                  rows={2}
+                  className="w-full resize-y rounded-md border border-transparent bg-transparent p-2 text-xs text-slate-400 transition-colors placeholder:text-slate-600 hover:border-white/10 hover:bg-white/[0.02] focus:border-sky-500/50 focus:bg-white/[0.03] focus:text-slate-200 focus:outline-none"
+                />
+              )}
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                    Các giai đoạn ({form.researchBrief.stages.filter(s => s.enabled).length}/{form.researchBrief.stages.length} đang chọn)
+                  </p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 text-[10px] text-sky-400"
+                    onClick={() => {
+                      if (!form.researchBrief) return;
+                      const newId = Math.max(0, ...form.researchBrief.stages.map(s => s.id)) + 1;
+                      set("researchBrief", {
+                        ...form.researchBrief,
+                        stages: [...form.researchBrief.stages, { id: newId, title: "Giai đoạn mới", detail: "", duration_hint: "Tùy chỉnh", enabled: true }]
+                      });
+                    }}
+                  >
+                    + Thêm giai đoạn
+                  </Button>
+                </div>
+                {form.researchBrief.stages.map((stage) => (
+                  <div
+                    key={stage.id}
+                    className={cn(
+                      "flex gap-3 rounded-lg border p-3 transition-all",
+                      stage.enabled
+                        ? "border-white/10 bg-white/[0.03]"
+                        : "border-white/5 bg-white/[0.01] opacity-50"
+                    )}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={stage.enabled}
+                      onChange={(e) => updateStage(stage.id, "enabled", e.target.checked)}
+                      className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 accent-sky-500"
+                    />
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={stage.title}
+                          onChange={(e) => updateStage(stage.id, "title", e.target.value)}
+                          className="flex-1 rounded border border-transparent bg-transparent px-1 text-sm font-medium text-slate-100 transition-colors placeholder:text-slate-600 hover:border-white/10 hover:bg-white/[0.02] focus:border-sky-500/50 focus:bg-white/[0.03] focus:outline-none"
+                        />
+                        {stage.duration_hint && (
+                          <span className="shrink-0 text-[10px] text-slate-500">
+                            {stage.duration_hint}
+                          </span>
+                        )}
+                      </div>
+                      <textarea
+                        value={stage.detail}
+                        onChange={(e) => updateStage(stage.id, "detail", e.target.value)}
+                        rows={3}
+                        className="w-full resize-y rounded border border-transparent bg-transparent p-1 text-xs text-slate-400 transition-colors placeholder:text-slate-600 hover:border-white/10 hover:bg-white/[0.02] focus:border-sky-500/50 focus:bg-white/[0.03] focus:text-slate-200 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {form.researchBrief.key_facts && (
+                <div className="space-y-2 mt-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                      Dữ kiện then chốt
+                    </p>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-6 text-[10px] text-sky-400"
+                      onClick={() => {
+                        if (!form.researchBrief) return;
+                        set("researchBrief", {
+                          ...form.researchBrief,
+                          key_facts: [...form.researchBrief.key_facts, { text: "Dữ kiện mới", enabled: true }]
+                        });
+                      }}
+                    >
+                      + Thêm dữ kiện
+                    </Button>
+                  </div>
+                  {form.researchBrief.key_facts.map((fact, idx) => (
+                    <div key={idx} className="flex items-start gap-2 mb-1">
+                      <input
+                        type="checkbox"
+                        checked={fact.enabled}
+                        onChange={(e) => updateFact(idx, "enabled", e.target.checked)}
+                        className="mt-1 h-3.5 w-3.5 rounded border-white/20 bg-white/5 accent-sky-500"
+                      />
+                      <textarea
+                        value={fact.text}
+                        onChange={(e) => updateFact(idx, "text", e.target.value)}
+                        rows={1}
+                        className="flex-1 resize-y rounded border border-transparent bg-transparent px-1 py-0 text-xs text-slate-300 transition-colors placeholder:text-slate-600 hover:border-white/10 hover:bg-white/[0.02] focus:border-sky-500/50 focus:bg-white/[0.03] focus:text-slate-200 focus:outline-none"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}

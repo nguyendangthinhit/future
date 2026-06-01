@@ -1,13 +1,40 @@
 import google.generativeai as genai
 import os, json
 
+
+def _format_research_section(extra_data: str, duration: int) -> str:
+    try:
+        data = json.loads(extra_data)
+        if "stages" not in data:
+            raise ValueError("not structured research")
+    except (json.JSONDecodeError, ValueError):
+        return f"\n📰 DỮ LIỆU BỔ SUNG TỪ GOOGLE:\n{extra_data}"
+
+    stages = data["stages"]
+    num_stages = len(stages)
+    seconds_per_stage = round(duration / num_stages) if num_stages else duration
+
+    lines = [f"\n📚 DỮ LIỆU NGHIÊN CỨU CHỦ ĐỀ:"]
+    if data.get("summary"):
+        lines.append(f"Tóm tắt: {data['summary']}")
+    lines.append(f"\nCác giai đoạn cần kể trong video (target ~{num_stages} stage cho ~{duration}s):")
+    for s in stages:
+        hint = f" [{s['duration_hint']}]" if s.get("duration_hint") else ""
+        lines.append(f"  {s['id']}.{hint} {s['title']} — {s.get('detail', '')}")
+
+    facts = data.get("key_facts", [])
+    if facts:
+        lines.append("\nSự kiện/dữ kiện then chốt:")
+        for f in facts:
+            lines.append(f"  • {f}")
+
+    lines.append(f"\nYÊU CẦU: phân bổ scenes đều theo các giai đoạn trên, mỗi stage chiếm ~{seconds_per_stage}s.")
+    return "\n".join(lines)
+
+from services.api_key_manager import gemini_key_manager
+
 def get_model():
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key or api_key == "your_gemini_api_key_here":
-        print("Warning: GEMINI_API_KEY is not set. Using mock model.")
-        return None
-    genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-2.5-flash")
+    return gemini_key_manager.get_model()
 
 def run_scriptwriter(
     raw_content: str,
@@ -23,28 +50,8 @@ def run_scriptwriter(
     Output: Kịch bản chi tiết (từng scene, thoại, text overlay)
     """
     
-    model = get_model()
-    if not model:
-        # Return mock JSON if no API key
-        return {
-            "title": f"Mock Script cho {raw_content[:20]}",
-            "hook_instruction": "Mock hook giật gân",
-            "scenes": [
-                {
-                    "scene_id": 1,
-                    "timestamp": "0s - 5s",
-                    "action": "Cảnh quay cận",
-                    "dialogue": "Xin chào!",
-                    "text_overlay": "HELLO",
-                    "emotion": "Vui vẻ"
-                }
-            ],
-            "background_music_mood": "Sôi động",
-            "cta": "Like and subscribe!"
-        }
-
     case_studies_text = json.dumps(case_studies, ensure_ascii=False, indent=2) if case_studies else "Không có"
-    extra_section = f"\n📰 DỮ LIỆU BỔ SUNG TỪ GOOGLE:\n{extra_data}" if extra_data else ""
+    extra_section = _format_research_section(extra_data, duration) if extra_data else ""
 
     prompt = f"""
 Bạn là một Biên Kịch sáng tạo chuyên nghiệp cho video mạng xã hội (TikTok/Facebook Reels).
@@ -89,7 +96,26 @@ Trả về JSON theo đúng format sau, KHÔNG giải thích gì thêm:
 }}
 """
     
-    response = model.generate_content(prompt)
+    response = gemini_key_manager.generate_content_with_retry(prompt)
+    if not response:
+        # Return mock JSON if no API key or generation failed completely
+        return {
+            "title": f"Mock Script cho {raw_content[:20]}",
+            "hook_instruction": "Mock hook giật gân",
+            "scenes": [
+                {
+                    "scene_id": 1,
+                    "timestamp": "0s - 5s",
+                    "action": "Cảnh quay cận",
+                    "dialogue": "Xin chào!",
+                    "text_overlay": "HELLO",
+                    "emotion": "Vui vẻ"
+                }
+            ],
+            "background_music_mood": "Sôi động",
+            "cta": "Like and subscribe!"
+        }
+
     text = response.text.strip()
     
     # Bóc tách JSON từ response

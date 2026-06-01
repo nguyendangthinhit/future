@@ -23,6 +23,7 @@ export interface CreateVideoForm {
   styleId: string | null;
   caption: string;
   generatedPrompt: string;
+  researchBrief: ResearchBrief | null;
 }
 
 export interface UploadedImage {
@@ -35,4 +36,19 @@ export interface UploadedImage {
 export interface CaptionSuggestion {
   text: string;
   tone: string;
+}
+
+export interface ResearchStage {
+  id: number;
+  title: string;
+  detail: string;
+  duration_hint: string;
+  enabled: boolean;
+}
+
+export interface ResearchBrief {
+  topic: string;
+  summary: string;
+  stages: ResearchStage[];
+  key_facts: { text: string; enabled: boolean }[];
 }
