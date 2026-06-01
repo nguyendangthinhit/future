@@ -1,6 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
-from services.sheets import get_all_videos, create_video_record
+from services.db import get_all_videos, create_video_record
 from services.agents.pipeline import run_full_pipeline, load_country_profile
 import os, json, requests
 

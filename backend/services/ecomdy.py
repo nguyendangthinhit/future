@@ -78,8 +78,29 @@ async def poll_video_status(job_id: str, max_retries: int = 60, delay_seconds: i
                 if output_url and status not in ("PENDING", "PROCESSING", "QUEUED", "RUNNING"):
                     return output_url
                 if status in ("FAILED", "ERROR"):
-                    err = (data.get("error") or {}).get("message", "Unknown error")
-                    raise Exception(f"Ecomdy render failed: {err}")
+                    error_data = data.get("error", {})
+                    err_msg = error_data.get("message", "Unknown error")
+                    err_code = error_data.get("code", "")
+                    
+                    # Dịch và giải thích lỗi cho User dễ hiểu
+                    user_friendly_err = f"Lỗi render Ecomdy ({err_code}): {err_msg}"
+                    
+                    if "TikTok task failed" in err_msg or "incompatible with the image-animation model" in err_msg:
+                        user_friendly_err = (
+                            "Lỗi kiểm duyệt hoặc không tương thích ảnh từ TikTok AIGC. "
+                            "Nguyên nhân thường gặp:\n"
+                            "- Ảnh chứa khuôn mặt người thật bị chặn bởi chính sách Deepfake.\n"
+                            "- Ảnh quá mờ, độ phân giải thấp, hoặc sai tỷ lệ.\n"
+                            "👉 Cách khắc phục: Hãy thử đổi sang ảnh hoạt hình, 3D mascot, hoặc phong cảnh không có mặt người thật."
+                        )
+                    elif "image_url is required" in err_msg:
+                        user_friendly_err = "Thiếu link ảnh. Engine TikTok Symphony bắt buộc phải có ảnh đầu vào (image_url) để tạo video."
+
+                    # Log raw ra terminal cho Dev
+                    print(f"[ECOMDY ERROR] Raw JSON: {response.text}")
+                    
+                    # Ném lỗi thân thiện cho User/Frontend
+                    raise Exception(user_friendly_err)
 
             await asyncio.sleep(delay_seconds)
 

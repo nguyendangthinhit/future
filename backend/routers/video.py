@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks
+from typing import Optional
 from pydantic import BaseModel
 from services.agents.pipeline import run_full_pipeline
 from services.sheets import create_video_record, update_video_status, get_all_videos
@@ -103,8 +104,9 @@ async def process_video_background(
     scheduled_date: str,
 ):
     try:
-        # 1. Chạy Multi-Agent Pipeline
-        pipeline_result = run_full_pipeline(
+        # 1. Chạy Multi-Agent Pipeline (dùng to_thread để không block event loop của FastAPI)
+        pipeline_result = await asyncio.to_thread(
+            run_full_pipeline,
             raw_content=raw_content,
             country_code=country_code,
             style_name=style_name,
@@ -116,8 +118,9 @@ async def process_video_background(
         
         director_output = pipeline_result.get("director_output", {})
 
-        # Cập nhật Sheet: Đang render Ecomdy
-        update_video_status(record_id, "processing")
+        # Cập nhật Sheet: Đang render Ecomdy và lưu prompt
+        prompt_text = _format_prompt(pipeline_result.get("script", {}), director_output)
+        update_video_status(record_id, "processing", {"final_prompt": prompt_text})
 
         # 2. Gửi request tạo video lên Ecomdy
         # Engine Ecomdy là image-to-video (Symphony/TikTok AIGC) -> BẮT BUỘC có image_url.
@@ -188,7 +191,7 @@ async def create_video(
     country_code: str = Form(default="VN"),
     use_google_data: bool = Form(default=False),
     search_keyword: str = Form(default=""),
-    mascot_image: UploadFile = File(default=None),
+    mascot_image: Optional[UploadFile] = File(default=None),
 ):
     try:
         # 1. Upload ảnh Mascot (nếu có) lên Google Drive ngay lập tức

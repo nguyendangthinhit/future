@@ -20,6 +20,9 @@ api_key.txt
 frontend/api_key.txt
 .env
 .env*.local
+service_account.json
+backend/service_account.json
+*.json
 
 # Google service account key — TUYỆT ĐỐI không commit
 service_account.json

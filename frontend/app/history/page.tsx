@@ -59,7 +59,8 @@ export default function HistoryPage() {
             time: item.scheduled_time || "00:00",
             status,
             dateIndex,
-            rawPrompt: item.final_prompt
+            rawPrompt: item.final_prompt,
+            videoUrl: item.video_url
           };
         });
         setEvents(mapped);
@@ -267,10 +268,22 @@ export default function HistoryPage() {
               <div className="space-y-8">
                 {/* Video Info */}
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-2">Video</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    Video information title and details. This is the generated content for this specific video instance.
-                  </p>
+                  <h3 className="text-lg font-bold text-white mb-4">Video Kết Quả</h3>
+                  {/* @ts-ignore */}
+                  {selectedEvent.videoUrl ? (
+                    <video 
+                      src={(selectedEvent as any).videoUrl} 
+                      controls 
+                      autoPlay
+                      loop
+                      className="w-full rounded-2xl border border-white/10 bg-black/50"
+                      style={{ maxHeight: "60vh" }}
+                    />
+                  ) : (
+                    <p className="text-sm text-slate-400 leading-relaxed italic">
+                      Video đang được render hoặc chưa có video...
+                    </p>
+                  )}
                 </div>
 
                 {/* Status */}

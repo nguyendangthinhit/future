@@ -96,6 +96,7 @@ export function CreateWizard() {
         break;
       case 1:
         if (form.content.trim().length < 10) m.push("nội dung (≥ 10 ký tự)");
+        if (form.images.length === 0) m.push("ảnh đính kèm");
         break;
       case 2:
         if (!form.styleId) m.push("phong cách");
@@ -177,7 +178,17 @@ export function CreateWizard() {
       
       const styleName = availableStyles.find(s => s.id === form.styleId)?.name || "";
       formData.append("style_name", styleName);
-      formData.append("duration", (form.duration || 30).toString());
+
+      // Parse duration from string (e.g. "20-30") to integer (e.g. 20)
+      let parsedDuration = 30;
+      if (typeof form.duration === "number") {
+        parsedDuration = form.duration;
+      } else if (typeof form.duration === "string") {
+        const first = parseInt(form.duration.split("-")[0], 10);
+        if (!Number.isNaN(first)) parsedDuration = first;
+      }
+      formData.append("duration", parsedDuration.toString());
+
       formData.append("country_code", "VN");
       formData.append("use_google_data", form.useGoogleData ? "true" : "false");
       formData.append("search_keyword", form.searchKeyword);
@@ -190,7 +201,7 @@ export function CreateWizard() {
       setSubmitted(true);
     } catch (e) {
       console.error("Failed to create video:", e);
-      alert("Lỗi khi tạo video. Vui lòng thử lại!");
+      alert("Lỗi: " + (e.message || String(e)));
     } finally {
       setSubmitting(false);
     }
@@ -456,7 +467,7 @@ function StepContent({
         </div>
       )}
 
-      <Field label="Hình ảnh đính kèm" hint="tùy chọn">
+      <Field label="Hình ảnh đính kèm" required hint="bắt buộc để render">
         <ImageUploader
           images={form.images}
           onChange={(imgs) => set("images", imgs)}
