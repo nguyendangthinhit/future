@@ -231,6 +231,8 @@ async def create_video(
             "duration": duration,
             "country_hook": country_code,
             "status": "pending",
+            # Lưu URL ảnh mascot vào Sheet ngay để team có thể xem
+            "image_urls": [mascot_image_url] if mascot_image_url else [],
         }
         record_id = create_video_record(record_data)
         
