@@ -1,0 +1,34 @@
+{
+  "theme": "Phòng khám nha khoa uy tín tại TP.HCM",
+  "brand": {
+    "name": "Nha Khoa Sunshine",
+    "toneOfVoice": "chuyên nghiệp, tận tâm, yên tâm",
+    "palette": {
+      "primary": "#1E90FF",
+      "accent": "#FFFFFF",
+      "bg": "#F0F8FF"
+    },
+    "fonts": {
+      "display": "Roboto Slab",
+      "body": "Open Sans"
+    },
+    "logoUrl": null,
+    "voiceId": "vi-male-professional",
+    "claimsAllowed": ["tư vấn miễn phí", "bác sĩ chứng chỉ", "trang thiết bị hiện đại"],
+    "claimsForbidden": ["chữa khỏi 100%", "không đau tuyệt đối", "rẻ nhất", "duy nhất"]
+  },
+  "audience": {
+    "segment": "gia đình Việt 25-50",
+    "age": "25-50",
+    "locale": "vi-VN"
+  },
+  "platform": "tiktok",
+  "constraints": {
+    "lengthSec": 30,
+    "aspect": ["9:16"],
+    "mustInclude": ["tư vấn", "bác sĩ"],
+    "mustAvoid": ["giá cụ thể", "cam kết kết quả"]
+  },
+  "moodboardUrls": [],
+  "variantsTarget": 2
+}

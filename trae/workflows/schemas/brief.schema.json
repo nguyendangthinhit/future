@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Content Factory Brief",
+  "type": "object",
+  "required": ["theme", "brand", "audience", "platform", "constraints", "variantsTarget"],
+  "properties": {
+    "theme": { "type": "string", "minLength": 1 },
+    "brand": {
+      "type": "object",
+      "required": ["name", "toneOfVoice"],
+      "properties": {
+        "name": { "type": "string" },
+        "toneOfVoice": { "type": "string" },
+        "palette": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": "string" },
+            "accent": { "type": "string" },
+            "bg": { "type": "string" }
+          }
+        },
+        "fonts": {
+          "type": "object",
+          "properties": {
+            "display": { "type": "string" },
+            "body": { "type": "string" }
+          }
+        },
+        "logoUrl": { "type": ["string", "null"] },
+        "voiceId": { "type": ["string", "null"] },
+        "claimsAllowed": { "type": "array", "items": { "type": "string" } },
+        "claimsForbidden": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "audience": {
+      "type": "object",
+      "properties": {
+        "segment": { "type": "string" },
+        "age": { "type": "string" },
+        "locale": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "platform": { "enum": ["tiktok", "reels", "shorts", "all"] },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "lengthSec": { "enum": [15, 20, 30] },
+        "aspect": {
+          "type": "array",
+          "items": { "enum": ["9:16", "1:1"] },
+          "minItems": 1
+        },
+        "mustInclude": { "type": "array", "items": { "type": "string" } },
+        "mustAvoid": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "moodboardUrls": { "type": "array", "items": { "type": "string" } },
+    "variantsTarget": { "enum": [1, 2] }
+  },
+  "additionalProperties": true
+}

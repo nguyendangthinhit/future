@@ -34,28 +34,30 @@ import {
   CheckCircle2,
   RotateCcw,
   Search,
+  PlayCircle,
+  PauseCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 
-const STEPS = ["Cấu hình", "Nội dung", "Phong cách", "Caption", "Xem lại"];
+const STEPS = ["Cấu hình", "Nội dung", "Nhân vật", "Phong cách", "Xem lại"];
 
 const FB_LIMIT = 63206;
 const TIKTOK_LIMIT = 2200;
 
 const emptyForm: CreateVideoForm = {
   videoType: null,
-  channel: null,
-  scheduledDate: "",
-  scheduledTime: "",
   duration: null,
+  targetLanguage: "Vietnamese",
   content: "",
   useGoogleData: false,
   searchKeyword: "",
+  engineType: "mascot",
+  avatarId: "",
+  voiceId: "",
   images: [],
   styleId: null,
-  caption: "",
   generatedPrompt: "",
   researchBrief: null,
 };
@@ -66,8 +68,8 @@ export function CreateWizard() {
   const [form, setForm] = useState<CreateVideoForm>(emptyForm);
 
   const [genningPrompt, setGenningPrompt] = useState(false);
-  const [genningCaption, setGenningCaption] = useState(false);
-  const [captionIdeas, setCaptionIdeas] = useState<CaptionSuggestion[]>([]);
+  
+  
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -80,7 +82,7 @@ export function CreateWizard() {
     () => stylesFor(form.videoType),
     [form.videoType]
   );
-  const captionLimit = form.channel === "facebook" ? FB_LIMIT : TIKTOK_LIMIT;
+  
 
   const goTo = (i: number) => {
     setStep(i);
@@ -92,20 +94,18 @@ export function CreateWizard() {
     switch (step) {
       case 0:
         if (!form.videoType) m.push("loại video");
-        if (!form.channel) m.push("kênh đăng");
-        if (!form.scheduledDate) m.push("ngày đăng");
-        if (!form.scheduledTime) m.push("giờ đăng");
         if (!form.duration) m.push("thời lượng");
+        if (!form.targetLanguage) m.push("ngôn ngữ");
         break;
       case 1:
         if (form.content.trim().length < 10) m.push("nội dung (≥ 10 ký tự)");
-        if (form.images.length === 0) m.push("ảnh đính kèm");
         break;
       case 2:
-        if (!form.styleId) m.push("phong cách");
+        if (form.engineType === "mascot" && form.images.length === 0) m.push("ảnh đính kèm");
+        if (form.engineType === "avatar" && !form.avatarId) m.push("chọn avatar");
         break;
       case 3:
-        if (form.caption.trim().length === 0) m.push("caption");
+        if (!form.styleId) m.push("phong cách");
         break;
     }
     return m;
@@ -139,34 +139,19 @@ export function CreateWizard() {
         }),
       });
       const data = await res.json();
-      set("generatedPrompt", data.prompt ?? "");
-    } catch {
-      set("generatedPrompt", "");
+      if (!res.ok) {
+        alert(data.error || "Lỗi tạo prompt từ AI");
+      } else {
+        set("generatedPrompt", data.prompt ?? "");
+      }
+    } catch (e: any) {
+      alert("Không thể kết nối đến máy chủ: " + e.message);
     } finally {
       setGenningPrompt(false);
     }
   }
 
-  const suggestCaption = async () => {
-    setGenningCaption(true);
-    try {
-      const styleName = availableStyles.find(s => s.id === form.styleId)?.name || "";
-      const res = await api.post("/caption/generate", {
-        content: form.content,
-        style_name: styleName,
-        channel: form.channel
-      });
-      if (res && res.captions) {
-        setCaptionIdeas(res.captions.map((c: string) => ({ text: c, tone: "Gợi ý AI" })));
-      }
-    } catch (e) {
-      console.error(e);
-      alert("Lỗi khi tạo caption.");
-    } finally {
-      setGenningCaption(false);
-    }
-  };
-
+  
   async function submit() {
     setSubmitting(true);
     try {
@@ -174,8 +159,9 @@ export function CreateWizard() {
       
       const formData = new FormData();
       formData.append("video_type", form.videoType || "");
-      formData.append("channel", form.channel || "");
-      formData.append("scheduled_date", form.scheduledDate);
+      formData.append("engine_type", form.engineType);
+      if (form.avatarId) formData.append("avatar_id", form.avatarId);
+      if (form.voiceId) formData.append("voice_id", form.voiceId);
       formData.append("raw_content", form.content);
       formData.append("style_id", form.styleId || "");
       
@@ -192,6 +178,7 @@ export function CreateWizard() {
       }
       formData.append("duration", parsedDuration.toString());
 
+      formData.append("target_language", form.targetLanguage);
       formData.append("country_code", "VN");
       formData.append("use_google_data", form.useGoogleData ? "true" : "false");
       formData.append("search_keyword", form.searchKeyword);
@@ -221,7 +208,7 @@ export function CreateWizard() {
 
   const reset = () => {
     setForm(emptyForm);
-    setCaptionIdeas([]);
+    
     setSubmitted(false);
     setStep(0);
     setMaxReached(0);
@@ -254,21 +241,12 @@ export function CreateWizard() {
             <Card className="p-6 sm:p-8">
               {step === 0 && <StepConfig form={form} set={set} />}
               {step === 1 && <StepContent form={form} set={set} />}
-              {step === 2 && (
+              {step === 2 && <StepEngine form={form} set={set} />}
+              {step === 3 && (
                 <StepStyle
                   form={form}
                   set={set}
                   styles={availableStyles}
-                />
-              )}
-              {step === 3 && (
-                <StepCaption
-                  form={form}
-                  set={set}
-                  limit={captionLimit}
-                  ideas={captionIdeas}
-                  loading={genningCaption}
-                  onSuggest={suggestCaption}
                 />
               )}
               {step === 4 && (
@@ -345,7 +323,7 @@ function StepConfig({
         <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">Bước 1</span>
         <Header
           title="Cấu hình cơ bản"
-          subtitle="Chọn loại video, kênh đăng và thời điểm bạn muốn xuất bản."
+          subtitle="Chọn loại video và thời lượng mong muốn."
         />
       </div>
 
@@ -376,61 +354,47 @@ function StepConfig({
         </div>
       </Field>
 
-      <Field label="Kênh đăng" required>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <OptionCard
-            selected={form.channel === "facebook"}
-            onClick={() => set("channel", "facebook")}
-            title="Facebook"
-            description="Đăng lên Fanpage"
-            icon={<Facebook className="h-5 w-5 text-[#1877F2]" />}
-          />
-          <OptionCard
-            selected={form.channel === "tiktok"}
-            onClick={() => set("channel", "tiktok")}
-            title="TikTok"
-            description="Đăng lên kênh TikTok"
-            icon={<Music2 className="h-5 w-5 text-slate-200" />}
-          />
-        </div>
-      </Field>
-
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Ngày đăng" required>
-          <TextInput
-            type="date"
-            value={form.scheduledDate}
-            onChange={(e) => set("scheduledDate", e.target.value)}
-          />
+        <Field label="Ngôn ngữ Video" required>
+          <select
+            value={form.targetLanguage}
+            onChange={(e) => set("targetLanguage", e.target.value)}
+            className="w-full h-11 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 text-sm text-slate-200 transition-colors placeholder:text-slate-500 hover:border-white/20 focus:border-sky-500/50 focus:bg-white/[0.05] focus:outline-none"
+          >
+            <option value="Vietnamese">🇻🇳 Vietnam (Tiếng Việt)</option>
+            <option value="English (US)">🇺🇸 USA (English)</option>
+            <option value="Japanese">🇯🇵 Japan (Tiếng Nhật)</option>
+            <option value="Chinese">🇨🇳 China (Tiếng Trung)</option>
+            <option value="Korean">🇰🇷 Korea (Tiếng Hàn)</option>
+            <option value="English (UK)">🇬🇧 UK (English)</option>
+            <option value="Thai">🇹🇭 Thailand (Tiếng Thái)</option>
+            <option value="English (Singapore)">🇸🇬 Singapore (English)</option>
+            <option value="German">🇩🇪 German (Tiếng Đức)</option>
+            <option value="French">🇫🇷 France (Tiếng Pháp)</option>
+            <option value="Arabic">🇦🇪 UAE (Tiếng Ả Rập)</option>
+          </select>
         </Field>
-        <Field label="Giờ đăng" required>
-          <TextInput
-            type="time"
-            value={form.scheduledTime}
-            onChange={(e) => set("scheduledTime", e.target.value)}
-          />
+        
+        <Field label="Thời lượng dự kiến" required hint="giây">
+          <div className="flex flex-wrap gap-2.5">
+            {DURATIONS.map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => set("duration", d)}
+                className={cn(
+                  "h-10 px-4 rounded-full border text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                  form.duration === d
+                    ? "border-white bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                    : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:bg-white/[0.05]"
+                )}
+              >
+                {d}s
+              </button>
+            ))}
+          </div>
         </Field>
       </div>
-
-      <Field label="Thời lượng dự kiến" required hint="giây">
-        <div className="flex flex-wrap gap-2.5">
-          {DURATIONS.map((d) => (
-            <button
-              key={d}
-              type="button"
-              onClick={() => set("duration", d)}
-              className={cn(
-                "h-10 px-4 rounded-full border text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
-                form.duration === d
-                  ? "border-white bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                  : "border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/20 hover:bg-white/[0.05]"
-              )}
-            >
-              {d}s
-            </button>
-          ))}
-        </div>
-      </Field>
     </div>
   );
 }
@@ -489,7 +453,7 @@ function StepContent({
     <div className="space-y-7">
       <Header
         title="Nội dung video"
-        subtitle="Mô tả ý tưởng của bạn. Tùy chọn thêm ảnh để giữ nhân vật nhất quán."
+        subtitle="Mô tả ý tưởng của bạn. Kịch bản sẽ được sinh tự động."
       />
 
       <Field label="Ý tưởng / nội dung" required hint="tối thiểu 10 ký tự">
@@ -663,12 +627,203 @@ function StepContent({
         </div>
       )}
 
-      <Field label="Hình ảnh đính kèm" required hint="bắt buộc để render">
-        <ImageUploader
-          images={form.images}
-          onChange={(imgs) => set("images", imgs)}
-        />
+      
+    </div>
+  );
+}
+
+/* ---------- Step 2.5: Engine ---------- */
+import { useEffect } from "react";
+function StepEngine({
+  form,
+  set,
+}: {
+  form: CreateVideoForm;
+  set: <K extends keyof CreateVideoForm>(k: K, v: CreateVideoForm[K]) => void;
+}) {
+  const [avatars, setAvatars] = useState<any[]>([]);
+  const [voices, setVoices] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [playingVoiceId, setPlayingVoiceId] = useState<string | null>(null);
+  const [audioRef, setAudioRef] = useState<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Cleanup audio on unmount
+    return () => {
+      if (audioRef) {
+        audioRef.pause();
+      }
+    };
+  }, [audioRef]);
+
+  const toggleAudio = (e: React.MouseEvent, voiceId: string, url: string) => {
+    e.stopPropagation(); // Ngăn việc click vào play lại kích hoạt chọn voice
+    if (playingVoiceId === voiceId && audioRef) {
+      audioRef.pause();
+      setPlayingVoiceId(null);
+    } else {
+      if (audioRef) audioRef.pause();
+      const newAudio = new Audio(url);
+      newAudio.play();
+      newAudio.onended = () => setPlayingVoiceId(null);
+      setAudioRef(newAudio);
+      setPlayingVoiceId(voiceId);
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const [avRes, voRes] = await Promise.all([
+          api.get("/video/avatars"),
+          api.get("/video/voices")
+        ]);
+        if (avRes && Array.isArray(avRes)) setAvatars(avRes);
+        if (voRes && Array.isArray(voRes)) {
+          setVoices(voRes);
+          // Auto select first voice if not selected
+          if (!form.voiceId && voRes.length > 0) {
+            set("voiceId", voRes[0].voice_id);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  return (
+    <div className="space-y-7">
+      <Header
+        title="Chọn nhân vật"
+        subtitle="Chọn chế độ tạo hình: Dùng ảnh tuỳ chỉnh (Kling) hoặc Avatar nhép miệng (Ecomdy)."
+      />
+
+      <Field label="Công nghệ tạo hình" required>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <OptionCard
+            selected={form.engineType === "mascot"}
+            onClick={() => {
+              set("engineType", "mascot");
+              set("avatarId", "");
+            }}
+            title="Mascot / Ảnh tuỳ chỉnh"
+            description="Tải lên ảnh 1 nhân vật hoặc phong cảnh để làm video câm."
+            icon={<span className="text-2xl drop-shadow-md">🖼️</span>}
+          />
+          <OptionCard
+            selected={form.engineType === "avatar"}
+            onClick={() => set("engineType", "avatar")}
+            title="Avatar nhép miệng"
+            description="Sử dụng AIGC Avatar có sẵn để tạo video người thật nhép miệng."
+            icon={<span className="text-2xl drop-shadow-md">🗣️</span>}
+          />
+        </div>
       </Field>
+
+      {form.engineType === "mascot" && (
+        <div className="animate-fade-in mt-4">
+          <Field label="Tải lên ảnh Mascot / Phong cảnh" required hint="1 ảnh">
+            <ImageUploader
+              images={form.images}
+              onChange={(imgs) => set("images", imgs)}
+            />
+          </Field>
+        </div>
+      )}
+
+      {form.engineType === "avatar" && (
+        <div className="animate-fade-in mt-4 space-y-3">
+          <Field label="Chọn Avatar" required>
+            {loading ? (
+              <div className="flex items-center gap-2 text-sm text-slate-400">
+                <Loader2 className="h-4 w-4 animate-spin" /> Đang tải danh sách...
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5 max-h-96 overflow-y-auto pr-2 pb-2">
+                {avatars.map((av) => (
+                  <button
+                    key={av.avatar_id}
+                    type="button"
+                    onClick={() => set("avatarId", av.avatar_id)}
+                    className={cn(
+                      "group relative overflow-hidden rounded-xl border-2 transition-all duration-300",
+                      form.avatarId === av.avatar_id
+                        ? "border-sky-400"
+                        : "border-transparent hover:border-white/20"
+                    )}
+                  >
+                    <img src={av.avatar_thumbnail} alt={av.avatar_name} className="w-full h-auto aspect-square object-cover" />
+                    <div className="absolute inset-x-0 bottom-0 bg-black/60 p-1.5 text-center text-xs text-white">
+                      {av.avatar_name}
+                    </div>
+                    {form.avatarId === av.avatar_id && (
+                      <div className="absolute top-1 right-1 bg-sky-500 rounded-full p-0.5">
+                        <CheckCircle2 className="h-3 w-3 text-white" />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </Field>
+          
+          <Field label="Chọn Giọng Đọc (Voice)" required>
+            {loading ? (
+              <div className="flex items-center gap-2 text-sm text-slate-400">
+                <Loader2 className="h-4 w-4 animate-spin" /> Đang tải danh sách...
+              </div>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {voices.map((voice) => (
+                  <button
+                    key={voice.voice_id}
+                    type="button"
+                    onClick={() => set("voiceId", voice.voice_id)}
+                    className={cn(
+                      "flex items-center justify-between p-3 rounded-xl border-2 text-left transition-all duration-300",
+                      form.voiceId === voice.voice_id
+                        ? "border-sky-400 bg-sky-500/10"
+                        : "border-white/10 hover:border-white/20 bg-white/5"
+                    )}
+                  >
+                    <div>
+                      <div className="text-sm font-semibold text-slate-200">
+                        {voice.voice_name}
+                      </div>
+                      <div className="text-xs text-slate-400 mt-1">
+                        {voice.language} • {voice.gender === "female" ? "Nữ" : "Nam"}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {voice.preview_url && (
+                        <button
+                          type="button"
+                          onClick={(e) => toggleAudio(e, voice.voice_id, voice.preview_url)}
+                          className="p-1 rounded-full hover:bg-white/10 transition-colors"
+                        >
+                          {playingVoiceId === voice.voice_id ? (
+                            <PauseCircle className="h-5 w-5 text-sky-400" />
+                          ) : (
+                            <PlayCircle className="h-5 w-5 text-slate-400 hover:text-white" />
+                          )}
+                        </button>
+                      )}
+                      {form.voiceId === voice.voice_id && (
+                        <CheckCircle2 className="h-5 w-5 text-sky-400" />
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </Field>
+        </div>
+      )}
     </div>
   );
 }
@@ -733,93 +888,6 @@ function StepStyle({
   );
 }
 
-/* ---------- Step 4: Caption ---------- */
-function StepCaption({
-  form,
-  set,
-  limit,
-  ideas,
-  loading,
-  onSuggest,
-}: {
-  form: CreateVideoForm;
-  set: <K extends keyof CreateVideoForm>(k: K, v: CreateVideoForm[K]) => void;
-  limit: number;
-  ideas: CaptionSuggestion[];
-  loading: boolean;
-  onSuggest: () => void;
-}) {
-  const len = form.caption.length;
-  const over = len > limit;
-  return (
-    <div className="space-y-7">
-      <Header
-        title="Caption bài đăng"
-        subtitle="Tự viết hoặc để AI gợi ý caption tối ưu theo nền tảng đã chọn."
-      />
-
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="outline" onClick={onSuggest} disabled={loading}>
-          {loading ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Đang nghĩ...
-            </>
-          ) : (
-            <>
-              <Wand2 className="h-4 w-4 text-fuchsia-400" /> AI gợi ý caption
-            </>
-          )}
-        </Button>
-        <span className="text-xs text-slate-500">
-          Tối ưu cho {form.channel === "facebook" ? "Facebook" : "TikTok"}
-        </span>
-      </div>
-
-      {ideas.length > 0 && (
-        <div className="space-y-2.5">
-          {ideas.map((idea, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => set("caption", idea.text)}
-              className="flex w-full items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3.5 text-left transition-colors hover:border-indigo-400/40 hover:bg-indigo-500/[0.08]"
-            >
-              <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-fuchsia-400" />
-              <span className="space-y-1">
-                <span className="block text-xs font-medium uppercase tracking-wide text-sky-400">
-                  {idea.tone}
-                </span>
-                <span className="block text-sm text-slate-200">
-                  {idea.text}
-                </span>
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
-
-      <Field label="Caption" required>
-        <TextArea
-          rows={5}
-          placeholder="Nhập caption hoặc chọn một gợi ý phía trên..."
-          value={form.caption}
-          onChange={(e) => set("caption", e.target.value)}
-        />
-        <div className="flex justify-end">
-          <span
-            className={cn(
-              "text-xs",
-              over ? "text-red-400" : "text-slate-500"
-            )}
-          >
-            {len.toLocaleString()} / {limit.toLocaleString()}
-          </span>
-        </div>
-      </Field>
-    </div>
-  );
-}
-
 /* ---------- Step 5: Review ---------- */
 function StepReview({
   form,
@@ -835,29 +903,20 @@ function StepReview({
     <div className="space-y-7">
       <Header
         title="Xem lại & xác nhận"
-        subtitle="Kiểm tra thông tin trước khi tạo video và lên lịch đăng."
+        subtitle="Kiểm tra thông tin trước khi tạo video."
       />
 
       <div className="grid gap-3 sm:grid-cols-2">
         <Summary label="Loại video" value={form.videoType === "ads" ? "Quảng cáo" : "Giải trí"} />
-        <Summary label="Kênh đăng" value={form.channel === "facebook" ? "Facebook" : "TikTok"} />
-        <Summary label="Lịch đăng" value={`${form.scheduledDate} · ${form.scheduledTime}`} />
         <Summary label="Thời lượng" value={form.duration ? `${form.duration}s` : "-"} />
         <Summary label="Phong cách" value={style?.name ?? "-"} />
-        <Summary label="Số ảnh đính kèm" value={`${form.images.length} ảnh`} />
+        <Summary label="Kiểu nhân vật" value={form.engineType === "mascot" ? "Mascot tuỳ chỉnh (Kling)" : "Avatar (Lip-sync)"} />
       </div>
 
       <div className="space-y-2">
         <p className="text-sm font-medium text-slate-200">Nội dung</p>
         <p className="rounded-xl border border-white/10 bg-white/[0.03] p-3.5 text-sm text-slate-300">
           {form.content}
-        </p>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-slate-200">Caption</p>
-        <p className="whitespace-pre-wrap rounded-xl border border-white/10 bg-white/[0.03] p-3.5 text-sm text-slate-300">
-          {form.caption}
         </p>
       </div>
 
@@ -929,12 +988,7 @@ function SuccessScreen({
         Đã gửi yêu cầu thành công!
       </h2>
       <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
-        Video đang được tạo bằng MarkX. Hệ thống sẽ tự động đăng lên{" "}
-        {form.channel === "facebook" ? "Facebook" : "TikTok"} vào{" "}
-        <span className="font-medium text-slate-200">
-          {form.scheduledDate} lúc {form.scheduledTime}
-        </span>
-        .
+        Video đang được tạo bằng MarkX. Quá trình này có thể mất vài phút. Bạn có thể xem trạng thái ở mục Lịch sử và tải file subtitle (.srt).
       </p>
       <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
         <Button onClick={onReset} className="group active:scale-[0.98] transition-all">

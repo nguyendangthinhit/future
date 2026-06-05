@@ -12,6 +12,7 @@ interface PromptBody {
   useGoogleData: boolean;
   searchKeyword: string;
   hasImages: boolean;
+  targetLanguage: string;
 }
 
 // Duration tới từ form có thể là dạng "30-40" (range) -> lấy số đầu làm giây.
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
         country_code: "VN",
         use_google_data: body.useGoogleData,
         search_keyword: body.searchKeyword,
+        target_language: body.targetLanguage,
       }),
     });
 
@@ -51,30 +53,18 @@ export async function POST(req: NextRequest) {
         source: data.source ?? "gemini",
       });
     }
-    // Backend trả lỗi -> rơi xuống mock cho luồng UI không vỡ.
-  } catch {
-    // Backend không chạy -> fallback mock.
+    
+    // Nếu API backend trả về lỗi, ném lỗi thẳng về client để UI báo lỗi
+    const errorText = await res.text();
+    return NextResponse.json(
+      { error: `Backend error: ${res.status} - ${errorText}` },
+      { status: res.status }
+    );
+  } catch (err: any) {
+    console.error("Lỗi gọi API preview-prompt:", err);
+    return NextResponse.json(
+      { error: `Lỗi kết nối Backend: ${err.message}` },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ prompt: mockPrompt(body), source: "mock" });
-}
-
-function mockPrompt(b: PromptBody): string {
-  const kind = b.videoType === "ads" ? "quảng cáo" : "giải trí";
-  const cameo = b.hasImages
-    ? "\n- AutoCameo: giữ nhân vật/linh vật nhất quán xuyên suốt từ ảnh đính kèm."
-    : "";
-  const extra = b.useGoogleData
-    ? `\n- Lồng ghép thông tin & trend mới nhất về "${b.searchKeyword || b.content}".`
-    : "";
-  return `Tạo video ${kind} thời lượng ${parseDuration(b.duration)} giây.
-
-Ý tưởng gốc: ${b.content}
-
-Chỉ đạo sản xuất (MarkX):
-- Hook 3 giây đầu gây tò mò, giữ chân người xem.
-- Nhịp cắt cảnh nhanh, bám theo phong cách đã chọn.
-- Text overlay ngắn gọn, nổi bật ở các điểm nhấn.${cameo}${extra}
-
-Camera: kết hợp pan/zoom mượt, ánh sáng phù hợp tông thương hiệu.`;
 }

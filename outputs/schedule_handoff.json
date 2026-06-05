@@ -1,0 +1,31 @@
+{
+  "variant_id": "A",
+  "platform": "tiktok",
+  "scheduled_at": "2026-06-05 09:00",
+  "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+  "title": "",
+  "hashtags": [
+    "#fyp",
+    "#trending",
+    "#brand",
+    "#highlands coffee"
+  ],
+  "final_video_urls": {},
+  "qa": {
+    "score": {
+      "hook": 90,
+      "brand": 100,
+      "compliance": 100,
+      "audio": 70,
+      "pacing": 90,
+      "caption": 100,
+      "cta": 100,
+      "total": 94,
+      "passed": true
+    },
+    "notes": [],
+    "feedback_for_director": "Đạt gate ≥80."
+  },
+  "source": "content_factory",
+  "created_at": 1780563751
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Content Factory Variant Pack",
+  "type": "object",
+  "required": ["variant_id", "variant_angle", "script", "storyboard", "pack"],
+  "properties": {
+    "variant_id": { "type": "string" },
+    "variant_angle": { "type": "string" },
+    "script": { "type": "object" },
+    "storyboard": { "type": "object" },
+    "clip_urls": { "type": "array", "items": { "type": "string" } },
+    "voice": { "type": ["object", "null"] },
+    "srt": { "type": "string" },
+    "final_video_urls": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "brand_lock_check": { "type": "object" },
+    "qa": { "type": "object" },
+    "qa_passed": { "type": "boolean" },
+    "pack": { "type": "object" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,34 @@
+{
+  "theme": "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+  "brand": {
+    "name": "Highlands Coffee",
+    "toneOfVoice": "ấm áp, đáng tin cậy, practical, có chút nostalgic",
+    "palette": {
+      "primary": "#8B4513",
+      "accent": "#FFD700",
+      "bg": "#FFFFFF"
+    },
+    "fonts": {
+      "display": "Montserrat",
+      "body": "Inter"
+    },
+    "logoUrl": "https://drive.google.com/uc?id=highlands-logo",
+    "voiceId": "vi-female-2",
+    "claimsAllowed": ["tiện lợi cho buổi sáng", "cà phê Việt"],
+    "claimsForbidden": ["chữa khỏi", "100% hiệu quả", "thuốc"]
+  },
+  "audience": {
+    "segment": "millennial mom Vietnam",
+    "age": "30-40",
+    "locale": "vi-VN"
+  },
+  "platform": "tiktok",
+  "constraints": {
+    "lengthSec": 20,
+    "aspect": ["9:16"],
+    "mustInclude": ["cà phê sữa đá", "khoảnh khắc sáng"],
+    "mustAvoid": ["thuốc lá", "rượu bia"]
+  },
+  "moodboardUrls": [],
+  "variantsTarget": 2
+}

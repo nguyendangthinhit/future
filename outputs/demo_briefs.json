@@ -1,0 +1,1456 @@
+{
+  "coffee_genz": {
+    "plan": {
+      "global_tone": "vui tươi, trẻ trung, relatable, có chút hoài niệm Sài Gòn",
+      "variants": [
+        {
+          "id": "A",
+          "angle": "emotional storytelling",
+          "hypothesis": "audience sẽ đồng cảm và share cao hơn",
+          "target_emotion": "curiosity",
+          "visual_motif": "first-person POV"
+        },
+        {
+          "id": "B",
+          "angle": "product-led demo",
+          "hypothesis": "audience sẽ hiểu tính năng rõ và CTR cao hơn",
+          "target_emotion": "trust",
+          "visual_motif": "studio product hero"
+        }
+      ]
+    },
+    "brand_lock": {
+      "tone_of_voice_rules": [
+        "vui tươi, trẻ trung, relatable, có chút hoài niệm Sài Gòn"
+      ],
+      "palette_rules": {
+        "must_use": [
+          "#8B4513",
+          "#FFD700"
+        ],
+        "avoid": [
+          "#FFFFFF"
+        ]
+      },
+      "font_rules": {
+        "display": "Montserrat",
+        "body": "Inter"
+      },
+      "logo_placement": "top-right",
+      "claims_compliance": {
+        "whitelist": [
+          "tươi mỗi ngày",
+          "cà phê Việt"
+        ],
+        "blacklist": [
+          "chữa khỏi",
+          "100% hiệu quả",
+          "thuốc"
+        ],
+        "rephrase_suggestions": {}
+      },
+      "do": [
+        "cà phê sữa đá",
+        "ly nhựa quen thuộc"
+      ],
+      "dont": [
+        "thuốc lá",
+        "rượu bia"
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "A",
+        "variant_angle": "emotional storytelling",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 90,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 94,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "A"
+        },
+        "total_s": 0.0
+      },
+      {
+        "variant_id": "B",
+        "variant_angle": "product-led demo",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 90,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 94,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "B"
+        },
+        "total_s": 0.0
+      }
+    ],
+    "publishable_variants": [
+      {
+        "variant_id": "A",
+        "variant_angle": "emotional storytelling",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 90,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 94,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "A"
+        },
+        "total_s": 0.0
+      },
+      {
+        "variant_id": "B",
+        "variant_angle": "product-led demo",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa product-led demo cho Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 90,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 94,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+            "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "B"
+        },
+        "total_s": 0.0
+      }
+    ],
+    "trace": [
+      {
+        "agent": "planner",
+        "status": "done",
+        "variant_id": null,
+        "elapsed_s": 6.619720458984375,
+        "detail": {}
+      },
+      {
+        "agent": "brand_steward",
+        "status": "done",
+        "variant_id": null,
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "copywriter",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.002046823501586914,
+        "detail": {}
+      },
+      {
+        "agent": "director",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "visualist",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "subtitler",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.0,
+        "detail": {
+          "has_srt": true,
+          "duration_s": 20
+        }
+      },
+      {
+        "agent": "copywriter",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "director",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "visualist",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "subtitler",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {
+          "has_srt": true,
+          "duration_s": 20
+        }
+      },
+      {
+        "agent": "crew_factory",
+        "status": "done",
+        "variant_id": null,
+        "elapsed_s": 0.006246089935302734,
+        "detail": {}
+      }
+    ],
+    "wall_s": 6.63,
+    "brief": {
+      "theme": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+      "brand": {
+        "name": "Highlands Coffee",
+        "toneOfVoice": "vui tươi, trẻ trung, relatable, có chút hoài niệm Sài Gòn",
+        "palette": {
+          "primary": "#8B4513",
+          "accent": "#FFD700",
+          "bg": "#FFFFFF"
+        },
+        "fonts": {
+          "display": "Montserrat",
+          "body": "Inter"
+        },
+        "logoUrl": "https://drive.google.com/uc?id=highlands-logo",
+        "voiceId": "vi-female-1",
+        "claimsAllowed": [
+          "tươi mỗi ngày",
+          "cà phê Việt"
+        ],
+        "claimsForbidden": [
+          "chữa khỏi",
+          "100% hiệu quả",
+          "thuốc"
+        ]
+      },
+      "audience": {
+        "segment": "gen-z Vietnam",
+        "age": "18-25",
+        "locale": "vi-VN"
+      },
+      "platform": "tiktok",
+      "constraints": {
+        "lengthSec": 20,
+        "aspect": [
+          "9:16"
+        ],
+        "mustInclude": [
+          "cà phê sữa đá",
+          "ly nhựa quen thuộc"
+        ],
+        "mustAvoid": [
+          "thuốc lá",
+          "rượu bia"
+        ]
+      },
+      "moodboardUrls": [],
+      "variantsTarget": 2
+    }
+  },
+  "coffee_millennial_mom": {
+    "plan": {
+      "global_tone": "ấm áp, đáng tin cậy, practical, có chút nostalgic",
+      "variants": [
+        {
+          "id": "A",
+          "angle": "emotional storytelling",
+          "hypothesis": "audience sẽ đồng cảm và share cao hơn",
+          "target_emotion": "curiosity",
+          "visual_motif": "first-person POV"
+        },
+        {
+          "id": "B",
+          "angle": "product-led demo",
+          "hypothesis": "audience sẽ hiểu tính năng rõ và CTR cao hơn",
+          "target_emotion": "trust",
+          "visual_motif": "studio product hero"
+        }
+      ]
+    },
+    "brand_lock": {
+      "tone_of_voice_rules": [
+        "ấm áp, đáng tin cậy, practical, có chút nostalgic"
+      ],
+      "palette_rules": {
+        "must_use": [
+          "#8B4513",
+          "#FFD700"
+        ],
+        "avoid": [
+          "#FFFFFF"
+        ]
+      },
+      "font_rules": {
+        "display": "Montserrat",
+        "body": "Inter"
+      },
+      "logo_placement": "top-right",
+      "claims_compliance": {
+        "whitelist": [
+          "tiện lợi cho buổi sáng",
+          "cà phê Việt"
+        ],
+        "blacklist": [
+          "chữa khỏi",
+          "100% hiệu quả",
+          "thuốc"
+        ],
+        "rephrase_suggestions": {}
+      },
+      "do": [
+        "cà phê sữa đá",
+        "khoảnh khắc sáng"
+      ],
+      "dont": [
+        "thuốc lá",
+        "rượu bia"
+      ]
+    },
+    "variants": [
+      {
+        "variant_id": "A",
+        "variant_angle": "emotional storytelling",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho mẹ millennial 30-40?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 100,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 96,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho mẹ millennial 30-40? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "A"
+        },
+        "total_s": 0.0
+      },
+      {
+        "variant_id": "B",
+        "variant_angle": "product-led demo",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho mẹ millennial 30-40?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 100,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 96,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho mẹ millennial 30-40? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "B"
+        },
+        "total_s": 0.0
+      }
+    ],
+    "publishable_variants": [
+      {
+        "variant_id": "A",
+        "variant_angle": "emotional storytelling",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho mẹ millennial 30-40?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa emotional storytelling cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 100,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 96,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho mẹ millennial 30-40? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "A"
+        },
+        "total_s": 0.0
+      },
+      {
+        "variant_id": "B",
+        "variant_angle": "product-led demo",
+        "script": {
+          "hook": "Bạn có biết Cà phê sữa đá Highlands cho mẹ millennial 30-40?",
+          "scenes": [
+            {
+              "scene_id": 1,
+              "t_start": 0.0,
+              "t_end": 5.0,
+              "action": "Cảnh 1 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 1 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 1/4",
+              "shot_id": "s1"
+            },
+            {
+              "scene_id": 2,
+              "t_start": 5.0,
+              "t_end": 10.0,
+              "action": "Cảnh 2 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 2 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 2/4",
+              "shot_id": "s2"
+            },
+            {
+              "scene_id": 3,
+              "t_start": 10.0,
+              "t_end": 15.0,
+              "action": "Cảnh 3 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 3 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 3/4",
+              "shot_id": "s3"
+            },
+            {
+              "scene_id": 4,
+              "t_start": 15.0,
+              "t_end": 20.0,
+              "action": "Cảnh 4 minh họa product-led demo cho Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+              "voiceover": "Đây là phần 4 về Highlands Coffee.",
+              "text_overlay": "Highlands Coffee · 4/4",
+              "shot_id": "s4"
+            }
+          ],
+          "cta": "Thử ngay hôm nay!",
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ]
+        },
+        "storyboard": {
+          "shots": [
+            {
+              "shot_id": "s1",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s2",
+              "duration_s": 5,
+              "mode": "i2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            },
+            {
+              "shot_id": "s3",
+              "duration_s": 5,
+              "mode": "r2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": true
+            },
+            {
+              "shot_id": "s4",
+              "duration_s": 5,
+              "mode": "t2v",
+              "visual_prompt": "Cà phê sữa đá Highlands cho mẹ millennial 30-40 cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+              "needs_reference": false
+            }
+          ],
+          "transitions": [
+            "cut",
+            "swipe"
+          ],
+          "pacing": "normal"
+        },
+        "clip_urls": [],
+        "voice": null,
+        "vo_text": "Đây là phần 1 về Highlands Coffee. Đây là phần 2 về Highlands Coffee. Đây là phần 3 về Highlands Coffee. Đây là phần 4 về Highlands Coffee.",
+        "srt": "1\n00:00:00,000 --> 00:00:05,000\nĐây là phần 1 về Highlands Coffee.\n\n2\n00:00:05,000 --> 00:00:10,000\nĐây là phần 2 về Highlands Coffee.\n\n3\n00:00:10,000 --> 00:00:15,000\nĐây là phần 3 về Highlands Coffee.\n\n4\n00:00:15,000 --> 00:00:20,000\nĐây là phần 4 về Highlands Coffee.\n",
+        "final_video_urls": {},
+        "brand_lock_check": {
+          "passed": true,
+          "missing": [],
+          "score": 100
+        },
+        "qa": {
+          "score": {
+            "hook": 100,
+            "brand": 100,
+            "compliance": 100,
+            "audio": 70,
+            "pacing": 90,
+            "caption": 100,
+            "cta": 100,
+            "total": 96,
+            "passed": true
+          },
+          "notes": [],
+          "feedback_for_director": "Đạt gate ≥80."
+        },
+        "qa_passed": true,
+        "pack": {
+          "title_options": [
+            "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Highlands Coffee - Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+            "Khám phá Cà phê sữa đá Highlands cho mẹ millennial 30-40"
+          ],
+          "caption": "Cà phê sữa đá Highlands cho mẹ millennial 30-40? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+          "hashtags": [
+            "#fyp",
+            "#trending",
+            "#brand",
+            "#highlands coffee"
+          ],
+          "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+          "best_posting_window": "Mon-Wed 7-9pm ICT",
+          "variant_id": "B"
+        },
+        "total_s": 0.0
+      }
+    ],
+    "trace": [
+      {
+        "agent": "planner",
+        "status": "done",
+        "variant_id": null,
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "brand_steward",
+        "status": "done",
+        "variant_id": null,
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "copywriter",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.0007731914520263672,
+        "detail": {}
+      },
+      {
+        "agent": "director",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "visualist",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "subtitler",
+        "status": "done",
+        "variant_id": "A",
+        "elapsed_s": 0.0,
+        "detail": {
+          "has_srt": true,
+          "duration_s": 20
+        }
+      },
+      {
+        "agent": "copywriter",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "director",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "visualist",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {}
+      },
+      {
+        "agent": "subtitler",
+        "status": "done",
+        "variant_id": "B",
+        "elapsed_s": 0.0,
+        "detail": {
+          "has_srt": true,
+          "duration_s": 20
+        }
+      },
+      {
+        "agent": "crew_factory",
+        "status": "done",
+        "variant_id": null,
+        "elapsed_s": 0.003480672836303711,
+        "detail": {}
+      }
+    ],
+    "wall_s": 0.0,
+    "brief": {
+      "theme": "Cà phê sữa đá Highlands cho mẹ millennial 30-40",
+      "brand": {
+        "name": "Highlands Coffee",
+        "toneOfVoice": "ấm áp, đáng tin cậy, practical, có chút nostalgic",
+        "palette": {
+          "primary": "#8B4513",
+          "accent": "#FFD700",
+          "bg": "#FFFFFF"
+        },
+        "fonts": {
+          "display": "Montserrat",
+          "body": "Inter"
+        },
+        "logoUrl": "https://drive.google.com/uc?id=highlands-logo",
+        "voiceId": "vi-female-2",
+        "claimsAllowed": [
+          "tiện lợi cho buổi sáng",
+          "cà phê Việt"
+        ],
+        "claimsForbidden": [
+          "chữa khỏi",
+          "100% hiệu quả",
+          "thuốc"
+        ]
+      },
+      "audience": {
+        "segment": "millennial mom Vietnam",
+        "age": "30-40",
+        "locale": "vi-VN"
+      },
+      "platform": "tiktok",
+      "constraints": {
+        "lengthSec": 20,
+        "aspect": [
+          "9:16"
+        ],
+        "mustInclude": [
+          "cà phê sữa đá",
+          "khoảnh khắc sáng"
+        ],
+        "mustAvoid": [
+          "thuốc lá",
+          "rượu bia"
+        ]
+      },
+      "moodboardUrls": [],
+      "variantsTarget": 2
+    }
+  }
+}

@@ -1,99 +1,115 @@
-import google.generativeai as genai
-import os, json
-
-from services.api_key_manager import gemini_key_manager
-
-def get_model():
-    return gemini_key_manager.get_model()
-
-def run_director(
-    script: dict,
-    style_name: str,
-    mascot_image_url: str = None,
-    duration: int = 60,
-) -> dict:
-    """
-    Agent 2: Đạo Diễn
-    Input: Kịch bản từ Biên Kịch + Style + Mascot Image
-    Output: Camera Prompts chuyên dụng cho Ecomdy API
-    """
-    
-    mascot_section = ""
-    if mascot_image_url:
-        mascot_section = f"""
-=== NHÂN VẬT CỐ ĐỊNH (AUTOCAMEO) ===
-Video này phải sử dụng nhân vật/sản phẩm từ ảnh sau làm nhân vật chính xuyên suốt:
-Image URL: {mascot_image_url}
-Yêu cầu: Giữ nguyên khuôn mặt/hình dạng nhân vật trong tất cả các cảnh.
 """
-    
-    scenes_text = json.dumps(script.get("scenes", []), ensure_ascii=False, indent=2)
+Director Agent — agent #4.
 
-    prompt = f"""
-Bạn là Đạo Diễn hình ảnh chuyên nghiệp, chuyên chuyển đổi kịch bản sang Camera Prompts cho AI Video Generator (Ecomdy API).
+Input: brief + brand_lock + variant + script.
+Output: StoryboardResult với shots[] (A-roll/B-roll, transitions, pacing).
+"""
 
-=== KỊCH BẢN CẦN DỊCH ===
-Tiêu đề: {script.get('title', '')}
-Hook: {script.get('hook_instruction', '')}
-Mood nhạc: {script.get('background_music_mood', '')}
+from __future__ import annotations
 
-Chi tiết từng cảnh:
-{scenes_text}
-{mascot_section}
-=== PHONG CÁCH VIDEO (STYLE) ===
-{style_name}
+import json
+import re
+from typing import Any
 
-=== NHIỆM VỤ ===
-Dịch từng cảnh trong kịch bản thành Camera Prompt tiếng Anh chuyên dụng cho Ecomdy API.
-Mỗi Prompt phải bao gồm: loại cảnh quay (shot type) + chuyển động camera + ánh sáng + màu sắc + tốc độ.
-🚨 LƯU Ý VỀ TEXT OVERLAY (CHỮ TRÊN VIDEO):
-- Nếu muốn chèn chữ, CHỈ NÊN dùng tiếng Anh siêu ngắn gọn (VD: "SALE", "WOW", "50% OFF").
-- TUYỆT ĐỐI KHÔNG yêu cầu AI render tiếng Việt có dấu. Các engine (như Kling/Symphony) sẽ render lỗi phông và biến thành chữ tiếng Trung Quốc.
-- Nếu kịch bản yêu cầu chữ tiếng Việt, hãy dời việc đó vào phần hậu kỳ (không đưa vào prompt của engine).
-- Chỉ miêu tả HÀNH ĐỘNG, BỐI CẢNH, và CẢM XÚC là chính.
+from model_gateway import get_llm
+from models.brief import Brief, StoryboardResult, ShotSpec
 
-=== OUTPUT JSON ===
-{{
-  "ecomdy_prompts": [
-    {{
-      "scene_id": 1,
-      "duration_seconds": 5,
-      "prompt": "Camera prompt tiếng Anh đầy đủ cho Ecomdy API",
-      "negative_prompt": "Những gì không muốn xuất hiện trong cảnh này"
-    }}
+
+SYSTEM_PROMPT = """Bạn là Director. Từ script đã có, hãy lên shot list cụ thể.
+
+Mỗi shot phải có:
+- shot_id: "s1", "s2", ...
+- duration_s: số nguyên (tổng tất cả shot = lengthSec)
+- mode: "t2v" | "i2v" | "r2v"
+- visual_prompt: prompt tiếng Anh tối ưu cho Seedance 2.0
+- needs_reference: true nếu cần brand reference
+
+Quy tắc:
+- Tối đa 6 shot / variant.
+- Shot đầu tiên NÊN là t2v (set visual world).
+- Shot demo sản phẩm NÊN là i2v.
+- B-roll lifestyle NÊN là r2v.
+
+Output JSON:
+{
+  "shots": [
+    {"shot_id": "s1", "duration_s": 4, "mode": "t2v", "visual_prompt": "...",
+     "needs_reference": false}
   ],
-  "global_style_prompt": "Prompt phong cách chung áp dụng cho toàn bộ video",
-  "recommended_aspect_ratio": "9:16",
-  "mascot_image_url": "{mascot_image_url or ''}"
-}}
+  "transitions": ["cut", "swipe", "fade"],
+  "pacing": "fast" | "normal" | "slow"
+}
+JSON only.
 """
-    
-    response = gemini_key_manager.generate_content_with_retry(prompt)
-    if not response:
-        # Mock response if no API key or generation failed completely
-        return {
-            "ecomdy_prompts": [
-                {
-                    "scene_id": 1,
-                    "duration_seconds": 5,
-                    "prompt": "Mock camera prompt",
-                    "negative_prompt": "ugly, blurry"
-                }
-            ],
-            "global_style_prompt": "Mock global style",
-            "recommended_aspect_ratio": "9:16",
-            "mascot_image_url": mascot_image_url or ""
-        }
 
-    text = response.text.strip()
-    
-    if "```json" in text:
-        text = text.split("```json")[1].split("```")[0].strip()
-    elif "```" in text:
-        text = text.split("```")[1].split("```")[0].strip()
-    
+
+def _try_json(text: str) -> dict | None:
     try:
         return json.loads(text)
-    except json.JSONDecodeError:
-        print("Lỗi parse JSON từ Gemini")
-        return {"error": "Lỗi parse JSON"}
+    except Exception:
+        pass
+    m = re.search(r"\{[\s\S]*\}", text)
+    if m:
+        try:
+            return json.loads(m.group(0))
+        except Exception:
+            return None
+    return None
+
+
+def _fallback(brief: Brief) -> StoryboardResult:
+    L = brief.constraints.lengthSec
+    n = min(6, max(3, L // 5))
+    per = L // n
+    modes = ["t2v", "i2v", "r2v", "t2v", "i2v", "t2v"]
+    shots = []
+    for i in range(n):
+        shots.append(ShotSpec(
+            shot_id=f"s{i+1}",
+            duration_s=per,
+            mode=modes[i % len(modes)],
+            visual_prompt=(
+                f"{brief.theme} cinematic shot {i+1}, "
+                f"9:16 vertical, professional lighting, brand-safe"
+            ),
+            needs_reference=(i % 3 == 2),
+        ))
+    return StoryboardResult(
+        shots=shots, transitions=["cut", "swipe"], pacing="normal",
+    )
+
+
+def run_director(
+    brief: Brief,
+    brand_lock: dict,
+    variant: dict,
+    script: dict,
+) -> StoryboardResult:
+    from .brand_steward import brand_lock_to_prompt
+
+    script_text = json.dumps(script, ensure_ascii=False, indent=2)
+    user_prompt = (
+        f"VARIANT: id={variant.get('id')}, angle={variant.get('angle')}\n\n"
+        + brand_lock_to_prompt(brand_lock)
+        + "\nSCRIPT (đã có từ copywriter):\n" + script_text
+        + f"\nLength: {brief.constraints.lengthSec}s\n"
+        + "Lên shot list JSON theo schema system prompt."
+    )
+    try:
+        result = get_llm().generate(
+            user_prompt, system=SYSTEM_PROMPT, json_mode=True, temperature=0.6,
+        )
+        data: Any = result.json or _try_json(result.text or "")
+        if not data or "shots" not in data:
+            raise ValueError("Director LLM không trả JSON hợp lệ")
+        shots = [ShotSpec.from_dict(s) for s in data["shots"][:6]]
+        if not shots:
+            raise ValueError("Director trả shots rỗng")
+        return StoryboardResult(
+            shots=shots,
+            transitions=data.get("transitions", []),
+            pacing=data.get("pacing", "normal"),
+        )
+    except Exception as e:
+        print(f"[director] fallback vì lỗi: {e}")
+        return _fallback(brief)

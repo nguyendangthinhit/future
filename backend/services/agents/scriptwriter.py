@@ -1,6 +1,5 @@
-import google.generativeai as genai
 import os, json
-
+from services.llm_manager import llm_manager
 
 def _format_research_section(extra_data: str, duration: int) -> str:
     try:
@@ -31,18 +30,17 @@ def _format_research_section(extra_data: str, duration: int) -> str:
     lines.append(f"\nYÊU CẦU: phân bổ scenes đều theo các giai đoạn trên, mỗi stage chiếm ~{seconds_per_stage}s.")
     return "\n".join(lines)
 
-from services.api_key_manager import gemini_key_manager
-
 def get_model():
-    return gemini_key_manager.get_model()
+    return llm_manager.get_gemini_model()
 
 def run_scriptwriter(
     raw_content: str,
     country_profile: dict,
     case_studies: list,
-    extra_data: str = "",
-    video_type: str = "entertainment",
     duration: int = 60,
+    video_type: str = "entertainment",
+    extra_data: str = "",
+    target_language: str = "Tiếng Việt",
 ) -> dict:
     """
     Agent 1: Biên Kịch
@@ -76,8 +74,10 @@ Viết kịch bản video {video_type} khoảng {duration} giây dựa trên:
 === CÁC VIDEO VIRAL THAM KHẢO TẠI ĐÂY ===
 {case_studies_text}
 
-=== YÊU CẦU OUTPUT ===
-Trả về JSON theo đúng format sau, KHÔNG giải thích gì thêm:
+=== YÊU CẦU ĐẦU RA ===
+1. Độ dài: Phù hợp video ngắn {duration}s (tương đương 100-150 từ nếu là VoiceOver).
+2. Ngôn ngữ (QUAN TRỌNG): TOÀN BỘ kịch bản, lời thoại (VoiceOver) và text hiển thị trên màn hình PHẢI ĐƯỢC VIẾT BẰNG NGÔN NGỮ: {target_language}.
+3. Format output BẮT BUỘC trả về JSON chuẩn, không markdown bọc ngoài:
 {{
   "title": "Tiêu đề gợi ý cho video",
   "hook_instruction": "Mô tả cụ thể cảnh mở đầu (0-5 giây) phải làm gì để giữ người xem",
@@ -96,25 +96,9 @@ Trả về JSON theo đúng format sau, KHÔNG giải thích gì thêm:
 }}
 """
     
-    response = gemini_key_manager.generate_content_with_retry(prompt)
+    response = llm_manager.generate_content_with_retry(prompt)
     if not response:
-        # Return mock JSON if no API key or generation failed completely
-        return {
-            "title": f"Mock Script cho {raw_content[:20]}",
-            "hook_instruction": "Mock hook giật gân",
-            "scenes": [
-                {
-                    "scene_id": 1,
-                    "timestamp": "0s - 5s",
-                    "action": "Cảnh quay cận",
-                    "dialogue": "Xin chào!",
-                    "text_overlay": "HELLO",
-                    "emotion": "Vui vẻ"
-                }
-            ],
-            "background_music_mood": "Sôi động",
-            "cta": "Like and subscribe!"
-        }
+        raise Exception("Không nhận được phản hồi từ LLM (Agent Biên Kịch). Vui lòng thử lại.")
 
     text = response.text.strip()
     

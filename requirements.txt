@@ -11,3 +11,6 @@ python-jose
 python-multipart
 Pillow
 httpx
+imageio
+imageio-ffmpeg
+numpy

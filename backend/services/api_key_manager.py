@@ -40,20 +40,22 @@ class GeminiKeyManager:
     def generate_content_with_retry(self, prompt, model_name="gemini-2.5-flash", max_retries=None):
         """Attempts to generate content, rotating keys if a ResourceExhausted or authentication error occurs."""
         if not self.keys:
-             return None
+             raise Exception("GEMINI_API_KEY is not set or empty.")
              
         if max_retries is None:
             max_retries = len(self.keys)
             
         attempts = 0
+        last_error = None
         while attempts < max_retries:
             try:
                 model = self.get_model(model_name)
                 if not model:
-                    return None
+                    raise Exception("Failed to initialize Gemini model")
                 response = model.generate_content(prompt)
                 return response
             except Exception as e:
+                last_error = e
                 error_msg = str(e).lower()
                 # Check for rate limit (429) or invalid key (400/401/403)
                 if "429" in error_msg or "resource exhausted" in error_msg or "quota" in error_msg or "400" in error_msg or "401" in error_msg or "403" in error_msg or "api key" in error_msg:
@@ -65,7 +67,7 @@ class GeminiKeyManager:
                     raise e
         
         print(f"[KeyManager] All {max_retries} attempts failed. Exhausted available keys.")
-        return None
+        raise Exception(f"All API keys exhausted or invalid. Last error: {last_error}")
 
 # Singleton instance for global use
 gemini_key_manager = GeminiKeyManager()

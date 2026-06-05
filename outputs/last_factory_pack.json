@@ -1,0 +1,867 @@
+{
+  "plan": {
+    "global_tone": "vui tươi, trẻ trung, relatable, có chút hoài niệm Sài Gòn",
+    "variants": [
+      {
+        "id": "A",
+        "angle": "trend-led Gen Z hook",
+        "hypothesis": "audience bi cuon vao 3 giay dau va comment cao hon",
+        "target_emotion": "curiosity",
+        "visual_motif": "fast first-person POV street style"
+      },
+      {
+        "id": "B",
+        "angle": "product-led demo",
+        "hypothesis": "audience hieu tinh nang nhanh va CTR cao hon",
+        "target_emotion": "excitement",
+        "visual_motif": "studio product hero with kinetic cuts"
+      }
+    ]
+  },
+  "brand_lock": {
+    "tone_of_voice_rules": [
+      "vui tươi, trẻ trung, relatable, có chút hoài niệm Sài Gòn"
+    ],
+    "palette_rules": {
+      "must_use": [
+        "#8B4513",
+        "#FFD700"
+      ],
+      "avoid": [
+        "#FFFFFF"
+      ]
+    },
+    "font_rules": {
+      "display": "Montserrat",
+      "body": "Inter"
+    },
+    "logo_placement": "top-right",
+    "claims_compliance": {
+      "whitelist": [
+        "tươi mỗi ngày",
+        "cà phê Việt"
+      ],
+      "blacklist": [
+        "chữa khỏi",
+        "100% hiệu quả",
+        "thuốc"
+      ],
+      "rephrase_suggestions": {}
+    },
+    "do": [
+      "cà phê sữa đá",
+      "ly nhựa quen thuộc"
+    ],
+    "dont": [
+      "thuốc lá",
+      "rượu bia"
+    ]
+  },
+  "variants": [
+    {
+      "variant_id": "A",
+      "variant_angle": "trend-led Gen Z hook",
+      "script": {
+        "hook": "Gen Z oi, Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam co dang viral vi dieu nay.",
+        "scenes": [
+          {
+            "scene_id": 1,
+            "t_start": 0.0,
+            "t_end": 5.0,
+            "action": "trend-led Gen Z hook: scene 1 for gen-z Vietnam",
+            "voiceover": "Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem.",
+            "text_overlay": "Dung lai 3 giay",
+            "shot_id": "s1"
+          },
+          {
+            "scene_id": 2,
+            "t_start": 5.0,
+            "t_end": 10.0,
+            "action": "trend-led Gen Z hook: scene 2 for gen-z Vietnam",
+            "voiceover": "Cat nhanh, mau ro, hook truc dien de giu nguoi xem tu dau.",
+            "text_overlay": "Vibe nay qua quen",
+            "shot_id": "s2"
+          },
+          {
+            "scene_id": 3,
+            "t_start": 10.0,
+            "t_end": 15.0,
+            "action": "trend-led Gen Z hook: scene 3 for gen-z Vietnam",
+            "voiceover": "Neu thay dung vibe cua ban, comment de xem bien the tiep theo.",
+            "text_overlay": "Ban se thu chu?",
+            "shot_id": "s3"
+          },
+          {
+            "scene_id": 4,
+            "t_start": 15.0,
+            "t_end": 20.0,
+            "action": "trend-led Gen Z hook: scene 4 for gen-z Vietnam",
+            "voiceover": "Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem.",
+            "text_overlay": "Dung lai 3 giay",
+            "shot_id": "s4"
+          }
+        ],
+        "cta": "Comment neu ban muon xem ban tiep theo.",
+        "title_options": [
+          "Highlands Coffee: trend-led Gen Z hook",
+          "gen-z Vietnam - Highlands Coffee",
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt "
+        ]
+      },
+      "storyboard": {
+        "shots": [
+          {
+            "shot_id": "s1",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s2",
+            "duration_s": 5,
+            "mode": "i2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s3",
+            "duration_s": 5,
+            "mode": "r2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": true
+          },
+          {
+            "shot_id": "s4",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          }
+        ],
+        "transitions": [
+          "cut",
+          "swipe"
+        ],
+        "pacing": "normal"
+      },
+      "clip_urls": [
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4"
+      ],
+      "voice": {
+        "audio_url": "",
+        "duration_s": 23.2,
+        "provider": "mock",
+        "voice_id": null
+      },
+      "vo_text": "Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem. Cat nhanh, mau ro, hook truc dien de giu nguoi xem tu dau. Neu thay dung vibe cua ban, comment de xem bien the tiep theo. Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem.",
+      "srt": "1\n00:00:00,000 --> 00:00:02,800\nDay la cach Highlands Coffee bien mot\n\n2\n00:00:02,800 --> 00:00:05,600\nkhoanh khac quen thuoc thanh noi dung\n\n3\n00:00:05,600 --> 00:00:08,400\ndang xem. Cat nhanh, mau ro, hook\n\n4\n00:00:08,400 --> 00:00:11,200\ntruc dien de giu nguoi xem tu\n\n5\n00:00:11,200 --> 00:00:14,000\ndau. Neu thay dung vibe cua ban,\n\n6\n00:00:14,000 --> 00:00:16,800\ncomment de xem bien the tiep theo.\n\n7\n00:00:16,800 --> 00:00:19,600\nDay la cach Highlands Coffee bien mot\n\n8\n00:00:19,600 --> 00:00:22,400\nkhoanh khac quen thuoc thanh noi dung\n\n9\n00:00:22,400 --> 00:00:23,200\ndang xem.\n",
+      "final_video_urls": {
+        "9:16": "D:/future/outputs/videos/highlands-coffee-b29f62f3/A/final_9x16.mp4",
+        "1:1": "D:/future/outputs/videos/highlands-coffee-b29f62f3/A/final_1x1.mp4",
+        "cover": "D:/future/outputs/videos/highlands-coffee-b29f62f3/A/cover.jpg"
+      },
+      "brand_lock_check": {
+        "passed": true,
+        "missing": [],
+        "score": 100
+      },
+      "qa": {
+        "score": {
+          "hook": 70,
+          "brand": 100,
+          "compliance": 100,
+          "audio": 70,
+          "pacing": 90,
+          "caption": 100,
+          "cta": 100,
+          "total": 88,
+          "passed": true
+        },
+        "notes": [],
+        "feedback_for_director": "Đạt gate ≥80."
+      },
+      "qa_passed": true,
+      "pack": {
+        "title_options": [
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+        ],
+        "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+        "hashtags": [
+          "#fyp",
+          "#trending",
+          "#brand",
+          "#highlands coffee"
+        ],
+        "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+        "best_posting_window": "Mon-Wed 7-9pm ICT",
+        "variant_id": "A"
+      },
+      "total_s": 78.62
+    },
+    {
+      "variant_id": "B",
+      "variant_angle": "product-led demo",
+      "script": {
+        "hook": "Thu test nhanh Highlands Coffee: co dang nhu loi don?",
+        "scenes": [
+          {
+            "scene_id": 1,
+            "t_start": 0.0,
+            "t_end": 5.0,
+            "action": "product-led demo: scene 1 for gen-z Vietnam",
+            "voiceover": "Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh.",
+            "text_overlay": "Test nhanh",
+            "shot_id": "s1"
+          },
+          {
+            "scene_id": 2,
+            "t_start": 5.0,
+            "t_end": 10.0,
+            "action": "product-led demo: scene 2 for gen-z Vietnam",
+            "voiceover": "Tap trung vao san pham, loi ich chinh va cach nguoi xem co the thu ngay.",
+            "text_overlay": "Can canh san pham",
+            "shot_id": "s2"
+          },
+          {
+            "scene_id": 3,
+            "t_start": 10.0,
+            "t_end": 15.0,
+            "action": "product-led demo: scene 3 for gen-z Vietnam",
+            "voiceover": "Neu ban muon mot lua chon gon va ro, day la diem can nho.",
+            "text_overlay": "Dang thu chu?",
+            "shot_id": "s3"
+          },
+          {
+            "scene_id": 4,
+            "t_start": 15.0,
+            "t_end": 20.0,
+            "action": "product-led demo: scene 4 for gen-z Vietnam",
+            "voiceover": "Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh.",
+            "text_overlay": "Test nhanh",
+            "shot_id": "s4"
+          }
+        ],
+        "cta": "Comment neu ban muon xem ban tiep theo.",
+        "title_options": [
+          "Highlands Coffee: product-led demo",
+          "gen-z Vietnam - Highlands Coffee",
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt "
+        ]
+      },
+      "storyboard": {
+        "shots": [
+          {
+            "shot_id": "s1",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s2",
+            "duration_s": 5,
+            "mode": "i2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s3",
+            "duration_s": 5,
+            "mode": "r2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": true
+          },
+          {
+            "shot_id": "s4",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          }
+        ],
+        "transitions": [
+          "cut",
+          "swipe"
+        ],
+        "pacing": "normal"
+      },
+      "clip_urls": [
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4"
+      ],
+      "voice": {
+        "audio_url": "",
+        "duration_s": 24.8,
+        "provider": "mock",
+        "voice_id": null
+      },
+      "vo_text": "Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh. Tap trung vao san pham, loi ich chinh va cach nguoi xem co the thu ngay. Neu ban muon mot lua chon gon va ro, day la diem can nho. Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh.",
+      "srt": "1\n00:00:00,000 --> 00:00:02,800\nDay la phien ban demo nhanh de\n\n2\n00:00:02,800 --> 00:00:05,600\nthay Highlands Coffee xuat hien ro trong\n\n3\n00:00:05,600 --> 00:00:08,400\ntung canh. Tap trung vao san pham,\n\n4\n00:00:08,400 --> 00:00:11,200\nloi ich chinh va cach nguoi xem\n\n5\n00:00:11,200 --> 00:00:14,000\nco the thu ngay. Neu ban muon\n\n6\n00:00:14,000 --> 00:00:16,800\nmot lua chon gon va ro, day\n\n7\n00:00:16,800 --> 00:00:19,600\nla diem can nho. Day la phien\n\n8\n00:00:19,600 --> 00:00:22,400\nban demo nhanh de thay Highlands Coffee\n\n9\n00:00:22,400 --> 00:00:24,800\nxuat hien ro trong tung canh.\n",
+      "final_video_urls": {
+        "9:16": "D:/future/outputs/videos/highlands-coffee-b29f62f3/B/final_9x16.mp4",
+        "1:1": "D:/future/outputs/videos/highlands-coffee-b29f62f3/B/final_1x1.mp4",
+        "cover": "D:/future/outputs/videos/highlands-coffee-b29f62f3/B/cover.jpg"
+      },
+      "brand_lock_check": {
+        "passed": true,
+        "missing": [],
+        "score": 100
+      },
+      "qa": {
+        "score": {
+          "hook": 90,
+          "brand": 100,
+          "compliance": 100,
+          "audio": 70,
+          "pacing": 90,
+          "caption": 100,
+          "cta": 100,
+          "total": 94,
+          "passed": true
+        },
+        "notes": [],
+        "feedback_for_director": "Đạt gate ≥80."
+      },
+      "qa_passed": true,
+      "pack": {
+        "title_options": [
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+        ],
+        "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+        "hashtags": [
+          "#fyp",
+          "#trending",
+          "#brand",
+          "#highlands coffee"
+        ],
+        "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+        "best_posting_window": "Mon-Wed 7-9pm ICT",
+        "variant_id": "B"
+      },
+      "total_s": 138.33
+    }
+  ],
+  "publishable_variants": [
+    {
+      "variant_id": "A",
+      "variant_angle": "trend-led Gen Z hook",
+      "script": {
+        "hook": "Gen Z oi, Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam co dang viral vi dieu nay.",
+        "scenes": [
+          {
+            "scene_id": 1,
+            "t_start": 0.0,
+            "t_end": 5.0,
+            "action": "trend-led Gen Z hook: scene 1 for gen-z Vietnam",
+            "voiceover": "Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem.",
+            "text_overlay": "Dung lai 3 giay",
+            "shot_id": "s1"
+          },
+          {
+            "scene_id": 2,
+            "t_start": 5.0,
+            "t_end": 10.0,
+            "action": "trend-led Gen Z hook: scene 2 for gen-z Vietnam",
+            "voiceover": "Cat nhanh, mau ro, hook truc dien de giu nguoi xem tu dau.",
+            "text_overlay": "Vibe nay qua quen",
+            "shot_id": "s2"
+          },
+          {
+            "scene_id": 3,
+            "t_start": 10.0,
+            "t_end": 15.0,
+            "action": "trend-led Gen Z hook: scene 3 for gen-z Vietnam",
+            "voiceover": "Neu thay dung vibe cua ban, comment de xem bien the tiep theo.",
+            "text_overlay": "Ban se thu chu?",
+            "shot_id": "s3"
+          },
+          {
+            "scene_id": 4,
+            "t_start": 15.0,
+            "t_end": 20.0,
+            "action": "trend-led Gen Z hook: scene 4 for gen-z Vietnam",
+            "voiceover": "Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem.",
+            "text_overlay": "Dung lai 3 giay",
+            "shot_id": "s4"
+          }
+        ],
+        "cta": "Comment neu ban muon xem ban tiep theo.",
+        "title_options": [
+          "Highlands Coffee: trend-led Gen Z hook",
+          "gen-z Vietnam - Highlands Coffee",
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt "
+        ]
+      },
+      "storyboard": {
+        "shots": [
+          {
+            "shot_id": "s1",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s2",
+            "duration_s": 5,
+            "mode": "i2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s3",
+            "duration_s": 5,
+            "mode": "r2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": true
+          },
+          {
+            "shot_id": "s4",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          }
+        ],
+        "transitions": [
+          "cut",
+          "swipe"
+        ],
+        "pacing": "normal"
+      },
+      "clip_urls": [
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4"
+      ],
+      "voice": {
+        "audio_url": "",
+        "duration_s": 23.2,
+        "provider": "mock",
+        "voice_id": null
+      },
+      "vo_text": "Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem. Cat nhanh, mau ro, hook truc dien de giu nguoi xem tu dau. Neu thay dung vibe cua ban, comment de xem bien the tiep theo. Day la cach Highlands Coffee bien mot khoanh khac quen thuoc thanh noi dung dang xem.",
+      "srt": "1\n00:00:00,000 --> 00:00:02,800\nDay la cach Highlands Coffee bien mot\n\n2\n00:00:02,800 --> 00:00:05,600\nkhoanh khac quen thuoc thanh noi dung\n\n3\n00:00:05,600 --> 00:00:08,400\ndang xem. Cat nhanh, mau ro, hook\n\n4\n00:00:08,400 --> 00:00:11,200\ntruc dien de giu nguoi xem tu\n\n5\n00:00:11,200 --> 00:00:14,000\ndau. Neu thay dung vibe cua ban,\n\n6\n00:00:14,000 --> 00:00:16,800\ncomment de xem bien the tiep theo.\n\n7\n00:00:16,800 --> 00:00:19,600\nDay la cach Highlands Coffee bien mot\n\n8\n00:00:19,600 --> 00:00:22,400\nkhoanh khac quen thuoc thanh noi dung\n\n9\n00:00:22,400 --> 00:00:23,200\ndang xem.\n",
+      "final_video_urls": {
+        "9:16": "D:/future/outputs/videos/highlands-coffee-b29f62f3/A/final_9x16.mp4",
+        "1:1": "D:/future/outputs/videos/highlands-coffee-b29f62f3/A/final_1x1.mp4",
+        "cover": "D:/future/outputs/videos/highlands-coffee-b29f62f3/A/cover.jpg"
+      },
+      "brand_lock_check": {
+        "passed": true,
+        "missing": [],
+        "score": 100
+      },
+      "qa": {
+        "score": {
+          "hook": 70,
+          "brand": 100,
+          "compliance": 100,
+          "audio": 70,
+          "pacing": 90,
+          "caption": 100,
+          "cta": 100,
+          "total": 88,
+          "passed": true
+        },
+        "notes": [],
+        "feedback_for_director": "Đạt gate ≥80."
+      },
+      "qa_passed": true,
+      "pack": {
+        "title_options": [
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+        ],
+        "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+        "hashtags": [
+          "#fyp",
+          "#trending",
+          "#brand",
+          "#highlands coffee"
+        ],
+        "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+        "best_posting_window": "Mon-Wed 7-9pm ICT",
+        "variant_id": "A"
+      },
+      "total_s": 78.62
+    },
+    {
+      "variant_id": "B",
+      "variant_angle": "product-led demo",
+      "script": {
+        "hook": "Thu test nhanh Highlands Coffee: co dang nhu loi don?",
+        "scenes": [
+          {
+            "scene_id": 1,
+            "t_start": 0.0,
+            "t_end": 5.0,
+            "action": "product-led demo: scene 1 for gen-z Vietnam",
+            "voiceover": "Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh.",
+            "text_overlay": "Test nhanh",
+            "shot_id": "s1"
+          },
+          {
+            "scene_id": 2,
+            "t_start": 5.0,
+            "t_end": 10.0,
+            "action": "product-led demo: scene 2 for gen-z Vietnam",
+            "voiceover": "Tap trung vao san pham, loi ich chinh va cach nguoi xem co the thu ngay.",
+            "text_overlay": "Can canh san pham",
+            "shot_id": "s2"
+          },
+          {
+            "scene_id": 3,
+            "t_start": 10.0,
+            "t_end": 15.0,
+            "action": "product-led demo: scene 3 for gen-z Vietnam",
+            "voiceover": "Neu ban muon mot lua chon gon va ro, day la diem can nho.",
+            "text_overlay": "Dang thu chu?",
+            "shot_id": "s3"
+          },
+          {
+            "scene_id": 4,
+            "t_start": 15.0,
+            "t_end": 20.0,
+            "action": "product-led demo: scene 4 for gen-z Vietnam",
+            "voiceover": "Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh.",
+            "text_overlay": "Test nhanh",
+            "shot_id": "s4"
+          }
+        ],
+        "cta": "Comment neu ban muon xem ban tiep theo.",
+        "title_options": [
+          "Highlands Coffee: product-led demo",
+          "gen-z Vietnam - Highlands Coffee",
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt "
+        ]
+      },
+      "storyboard": {
+        "shots": [
+          {
+            "shot_id": "s1",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 1, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s2",
+            "duration_s": 5,
+            "mode": "i2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 2, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          },
+          {
+            "shot_id": "s3",
+            "duration_s": 5,
+            "mode": "r2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 3, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": true
+          },
+          {
+            "shot_id": "s4",
+            "duration_s": 5,
+            "mode": "t2v",
+            "visual_prompt": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam cinematic shot 4, 9:16 vertical, professional lighting, brand-safe",
+            "needs_reference": false
+          }
+        ],
+        "transitions": [
+          "cut",
+          "swipe"
+        ],
+        "pacing": "normal"
+      },
+      "clip_urls": [
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+        "https://www.w3schools.com/html/mov_bbb.mp4"
+      ],
+      "voice": {
+        "audio_url": "",
+        "duration_s": 24.8,
+        "provider": "mock",
+        "voice_id": null
+      },
+      "vo_text": "Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh. Tap trung vao san pham, loi ich chinh va cach nguoi xem co the thu ngay. Neu ban muon mot lua chon gon va ro, day la diem can nho. Day la phien ban demo nhanh de thay Highlands Coffee xuat hien ro trong tung canh.",
+      "srt": "1\n00:00:00,000 --> 00:00:02,800\nDay la phien ban demo nhanh de\n\n2\n00:00:02,800 --> 00:00:05,600\nthay Highlands Coffee xuat hien ro trong\n\n3\n00:00:05,600 --> 00:00:08,400\ntung canh. Tap trung vao san pham,\n\n4\n00:00:08,400 --> 00:00:11,200\nloi ich chinh va cach nguoi xem\n\n5\n00:00:11,200 --> 00:00:14,000\nco the thu ngay. Neu ban muon\n\n6\n00:00:14,000 --> 00:00:16,800\nmot lua chon gon va ro, day\n\n7\n00:00:16,800 --> 00:00:19,600\nla diem can nho. Day la phien\n\n8\n00:00:19,600 --> 00:00:22,400\nban demo nhanh de thay Highlands Coffee\n\n9\n00:00:22,400 --> 00:00:24,800\nxuat hien ro trong tung canh.\n",
+      "final_video_urls": {
+        "9:16": "D:/future/outputs/videos/highlands-coffee-b29f62f3/B/final_9x16.mp4",
+        "1:1": "D:/future/outputs/videos/highlands-coffee-b29f62f3/B/final_1x1.mp4",
+        "cover": "D:/future/outputs/videos/highlands-coffee-b29f62f3/B/cover.jpg"
+      },
+      "brand_lock_check": {
+        "passed": true,
+        "missing": [],
+        "score": 100
+      },
+      "qa": {
+        "score": {
+          "hook": 90,
+          "brand": 100,
+          "compliance": 100,
+          "audio": 70,
+          "pacing": 90,
+          "caption": 100,
+          "cta": 100,
+          "total": 94,
+          "passed": true
+        },
+        "notes": [],
+        "feedback_for_director": "Đạt gate ≥80."
+      },
+      "qa_passed": true,
+      "pack": {
+        "title_options": [
+          "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Highlands Coffee - Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+          "Khám phá Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam"
+        ],
+        "caption": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam? Bạn đã thử chưa. Highlands Coffee mang đến trải nghiệm mới. 👉 Xem ngay!",
+        "hashtags": [
+          "#fyp",
+          "#trending",
+          "#brand",
+          "#highlands coffee"
+        ],
+        "cover_art_prompt": "Hero shot of Highlands Coffee product, cinematic lighting, 9:16 vertical, vibrant colors, brand-safe",
+        "best_posting_window": "Mon-Wed 7-9pm ICT",
+        "variant_id": "B"
+      },
+      "total_s": 138.33
+    }
+  ],
+  "trace": [
+    {
+      "agent": "planner",
+      "status": "done",
+      "variant_id": null,
+      "elapsed_s": 1.029850959777832,
+      "detail": {}
+    },
+    {
+      "agent": "brand_steward",
+      "status": "done",
+      "variant_id": null,
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "copywriter",
+      "status": "done",
+      "variant_id": "A",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "director",
+      "status": "done",
+      "variant_id": "A",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "visualist",
+      "status": "done",
+      "variant_id": "A",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "copywriter",
+      "status": "done",
+      "variant_id": "B",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "director",
+      "status": "done",
+      "variant_id": "B",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "visualist",
+      "status": "done",
+      "variant_id": "B",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "renderer",
+      "status": "done",
+      "variant_id": "A",
+      "elapsed_s": 20.062680959701538,
+      "detail": {
+        "clips": 4,
+        "shots": 4
+      }
+    },
+    {
+      "agent": "voice",
+      "status": "done",
+      "variant_id": "A",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "subtitler",
+      "status": "done",
+      "variant_id": "A",
+      "elapsed_s": 0.0,
+      "detail": {
+        "has_srt": true,
+        "duration_s": 23.2
+      }
+    },
+    {
+      "agent": "editor",
+      "status": "failed",
+      "variant_id": "A",
+      "elapsed_s": 0.005019664764404297,
+      "detail": {
+        "reason": "no local clips after materialization"
+      }
+    },
+    {
+      "agent": "editor",
+      "status": "done",
+      "variant_id": "A",
+      "elapsed_s": 58.433223724365234,
+      "detail": {
+        "aspects": [
+          "9:16",
+          "1:1"
+        ],
+        "cover": "D:/future/outputs/videos/highlands-coffee-b29f62f3/A/cover.jpg",
+        "mode": "local_publish_ready_fallback",
+        "subtitles": true
+      }
+    },
+    {
+      "agent": "renderer",
+      "status": "done",
+      "variant_id": "B",
+      "elapsed_s": 78.62013721466064,
+      "detail": {
+        "clips": 4,
+        "shots": 4
+      }
+    },
+    {
+      "agent": "voice",
+      "status": "done",
+      "variant_id": "B",
+      "elapsed_s": 0.0,
+      "detail": {}
+    },
+    {
+      "agent": "subtitler",
+      "status": "done",
+      "variant_id": "B",
+      "elapsed_s": 0.0,
+      "detail": {
+        "has_srt": true,
+        "duration_s": 24.8
+      }
+    },
+    {
+      "agent": "editor",
+      "status": "failed",
+      "variant_id": "B",
+      "elapsed_s": 0.0020051002502441406,
+      "detail": {
+        "reason": "no local clips after materialization"
+      }
+    },
+    {
+      "agent": "editor",
+      "status": "done",
+      "variant_id": "B",
+      "elapsed_s": 59.70822787284851,
+      "detail": {
+        "aspects": [
+          "9:16",
+          "1:1"
+        ],
+        "cover": "D:/future/outputs/videos/highlands-coffee-b29f62f3/B/cover.jpg",
+        "mode": "local_publish_ready_fallback",
+        "subtitles": true
+      }
+    },
+    {
+      "agent": "crew_factory",
+      "status": "done",
+      "variant_id": null,
+      "elapsed_s": 138.3303701877594,
+      "detail": {}
+    }
+  ],
+  "wall_s": 139.36,
+  "brief": {
+    "theme": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+    "brand": {
+      "name": "Highlands Coffee",
+      "toneOfVoice": "vui tươi, trẻ trung, relatable, có chút hoài niệm Sài Gòn",
+      "palette": {
+        "primary": "#8B4513",
+        "accent": "#FFD700",
+        "bg": "#FFFFFF"
+      },
+      "fonts": {
+        "display": "Montserrat",
+        "body": "Inter"
+      },
+      "logoUrl": "https://drive.google.com/uc?id=highlands-logo",
+      "voiceId": "vi-female-1",
+      "claimsAllowed": [
+        "tươi mỗi ngày",
+        "cà phê Việt"
+      ],
+      "claimsForbidden": [
+        "chữa khỏi",
+        "100% hiệu quả",
+        "thuốc"
+      ]
+    },
+    "audience": {
+      "segment": "gen-z Vietnam",
+      "age": "18-25",
+      "locale": "vi-VN"
+    },
+    "platform": "tiktok",
+    "constraints": {
+      "lengthSec": 20,
+      "aspect": [
+        "9:16",
+        "1:1"
+      ],
+      "mustInclude": [
+        "cà phê sữa đá",
+        "ly nhựa quen thuộc"
+      ],
+      "mustAvoid": [
+        "thuốc lá",
+        "rượu bia"
+      ]
+    },
+    "moodboardUrls": [],
+    "variantsTarget": 2
+  },
+  "elapsed_s": 139.36
+}

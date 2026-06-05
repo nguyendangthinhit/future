@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 # loaded first or they capture None and silently fall back to mock mode.
 load_dotenv()
 
-from routers import video, verify, dashboard, trending, caption, research
+from routers import video, verify, dashboard, trending, caption, research, factory
 from services.scheduler import start_scheduler
 
 from contextlib import asynccontextmanager
@@ -49,6 +49,7 @@ app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["Dashboar
 app.include_router(trending.router,  prefix="/api/v1/trending",  tags=["Trending"])
 app.include_router(caption.router,   prefix="/api/v1/caption",   tags=["Caption"])
 app.include_router(research.router,  prefix="/api/v1/research",  tags=["Research"])
+app.include_router(factory.router,   prefix="/api/v1/factory",   tags=["Factory"])
 
 @app.get("/health")
 def health_check():

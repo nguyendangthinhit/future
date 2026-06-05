@@ -5,13 +5,28 @@ from services.agents.pipeline import run_full_pipeline
 from services.sheets import create_video_record, update_video_status, get_all_videos
 from services.drive_service import upload_image
 from services.serper import search_google
-from services.ecomdy import generate_video, poll_video_status
+from services.ecomdy import generate_video, generate_avatar_video, poll_video_status
 from services.research import run_research_sync
+from services.tts_service import extract_dialogue_from_script
+from services.subtitles import generate_srt_from_script
+from services.avatars import get_all_avatars
+from services.voices import VOICES
+from services.drive_service import upload_video
 import httpx, os, json
 import asyncio
 
 router = APIRouter()
 
+
+@router.get("/avatars")
+def list_avatars():
+    """Lấy danh sách avatar có sẵn từ Ecomdy."""
+    return get_all_avatars()
+
+@router.get("/voices")
+def list_voices():
+    """Lấy danh sách giọng đọc có sẵn."""
+    return VOICES
 
 class PreviewPromptRequest(BaseModel):
     content: str
@@ -22,6 +37,7 @@ class PreviewPromptRequest(BaseModel):
     use_google_data: bool = False
     search_keyword: str = ""
     research_brief: str = ""
+    target_language: str = "Vietnamese"
 
 
 def _format_prompt(script: dict, director: dict) -> str:
@@ -85,6 +101,7 @@ def preview_prompt(req: PreviewPromptRequest):
             video_type=req.video_type,
             extra_data=extra_data,
             mascot_image_url=None,
+            target_language=req.target_language,
         )
         script = result.get("script", {})
         director = result.get("director_output", {})
@@ -111,11 +128,13 @@ async def process_video_background(
     video_type: str,
     extra_data: str,
     mascot_image_url: str,
-    channel: str,
-    scheduled_date: str,
+    engine_type: str,
+    avatar_id: str,
+    voice_id: str,
+    target_language: str,
 ):
     try:
-        # 1. Chạy Multi-Agent Pipeline (dùng to_thread để không block event loop của FastAPI)
+        # 1. Chạy Multi-Agent Pipeline
         pipeline_result = await asyncio.to_thread(
             run_full_pipeline,
             raw_content=raw_content,
@@ -125,67 +144,74 @@ async def process_video_background(
             video_type=video_type,
             extra_data=extra_data,
             mascot_image_url=mascot_image_url,
+            target_language=target_language,
         )
         
         director_output = pipeline_result.get("director_output", {})
+        script = pipeline_result.get("script", {})
 
         # Cập nhật Sheet: Đang render Ecomdy và lưu prompt
-        prompt_text = _format_prompt(pipeline_result.get("script", {}), director_output)
+        prompt_text = _format_prompt(script, director_output)
         update_video_status(record_id, "processing", {"final_prompt": prompt_text})
 
-        # 2. Gửi request tạo video lên Ecomdy
-        # Engine Ecomdy là image-to-video (Symphony/TikTok AIGC) -> BẮT BUỘC có image_url.
-        image_url = (
-            mascot_image_url
-            or director_output.get("mascot_image_url")
-            or ""
-        )
-        if not image_url:
-            raise Exception(
-                "Ecomdy yêu cầu image_url (engine image-to-video) nhưng không có ảnh mascot. "
-                "Hãy đính kèm mascot_image khi gọi /create."
-            )
+        # 2. Sinh file SRT từ kịch bản
+        srt_content = generate_srt_from_script(script, total_duration=duration)
 
-        ecomdy_payload = {
-            "image_url": image_url,
-            "prompt": director_output.get("global_style_prompt", ""),
-            "aspect_ratio": director_output.get("recommended_aspect_ratio", "9:16"),
-            "kling_prompts": director_output.get("ecomdy_prompts", []),
-        }
+        # 3. Gửi request tạo video lên Ecomdy tuỳ vào Engine Type
+        print(f"[{record_id}] Bắt đầu gọi Ecomdy API (Engine: {engine_type})...")
         
-        print(f"[{record_id}] Bắt đầu gọi Ecomdy API...")
-        job_id = await generate_video(ecomdy_payload)
+        job_id = None
+        if engine_type == "avatar":
+            # Engine Avatar: Nhép miệng
+            dialogue_text = extract_dialogue_from_script(script)
+            if not dialogue_text:
+                dialogue_text = "Xin chào, đây là video được tạo tự động."
+                
+            avatar_payload = {
+                "avatar_id": avatar_id or "7617761243722661909", # Default avatar nếu rỗng
+                "script": dialogue_text,
+                "voice_id": voice_id or os.getenv("DEFAULT_VOICE_ID", "7644282781753131016"), # Dùng voice truyền vào, hoặc mặc định
+            }
+            job_id = await generate_avatar_video(avatar_payload)
+            
+        else:
+            # Engine Mascot: Image to video (Câm)
+            image_url = (
+                mascot_image_url
+                or director_output.get("mascot_image_url")
+                or ""
+            )
+            if not image_url:
+                raise Exception("Ecomdy yêu cầu image_url (Mascot mode) nhưng không có ảnh mascot.")
+
+            ecomdy_payload = {
+                "image_url": image_url,
+                "prompt": director_output.get("global_style_prompt", ""),
+                "aspect_ratio": director_output.get("recommended_aspect_ratio", "9:16"),
+                "kling_prompts": director_output.get("ecomdy_prompts", []),
+            }
+            job_id = await generate_video(ecomdy_payload)
+            
         
-        # 3. Polling đợi kết quả
+        # 4. Polling đợi kết quả
         print(f"[{record_id}] Ecomdy Job ID: {job_id}. Đang chờ render...")
         video_url = await poll_video_status(job_id)
         
-        print(f"[{record_id}] Render xong! URL: {video_url}")
+        print(f"[{record_id}] Video render xong! URL: {video_url}")
         
-        # Cập nhật Sheet: Đã render xong
-        update_video_status(record_id, "rendered", {"video_url": video_url})
+        # Cập nhật Sheet: Đã render xong (Kèm link video và nội dung SRT)
+        update_video_status(record_id, "rendered", {
+            "video_url": video_url,
+            "srt_content": srt_content, # Trả về cho frontend tải xuống
+        })
         
-        # 4. Gửi sang n8n Webhook để lên lịch đăng bài
-        n8n_url = os.getenv("N8N_WEBHOOK_URL")
-        if n8n_url and n8n_url != "http://your-n8n.com/webhook/create-video":
-            n8n_payload = {
-                "sheet_id": record_id,
-                "channel": channel,
-                "video_url": video_url,
-                "caption": pipeline_result.get("script", {}).get("title", ""),
-                "scheduled_date": scheduled_date,
-                "callback_url": f"{os.getenv('BACKEND_URL', 'http://localhost:8000')}/api/v1/video/callback",
-            }
-            
-            async with httpx.AsyncClient(timeout=10) as client:
-                try:
-                    await client.post(n8n_url, json=n8n_payload)
-                    print(f"[{record_id}] Đã đẩy sang n8n thành công.")
-                except Exception as e:
-                    print(f"Warning: Failed to call n8n webhook: {e}")
+        # CHÚ Ý: Đã gỡ bỏ tính năng đẩy sang n8n tự động ở đây.
+        # User sẽ tải video, sửa, và lên lịch thủ công ở trang /schedule.
                     
     except Exception as e:
         print(f"[{record_id}] Error in background processing: {e}")
+        import traceback
+        traceback.print_exc()
         update_video_status(record_id, "failed", {"error_log": str(e)})
 
 
@@ -193,8 +219,6 @@ async def process_video_background(
 async def create_video(
     background_tasks: BackgroundTasks,
     video_type: str = Form(...),
-    channel: str = Form(...),
-    scheduled_date: str = Form(...),
     raw_content: str = Form(...),
     style_id: str = Form(...),
     style_name: str = Form(...),
@@ -204,6 +228,10 @@ async def create_video(
     search_keyword: str = Form(default=""),
     research_brief: str = Form(default=""),
     mascot_image: Optional[UploadFile] = File(default=None),
+    engine_type: str = Form(default="mascot"), # "mascot" or "avatar"
+    avatar_id: str = Form(default=""),
+    voice_id: str = Form(default=""),
+    target_language: str = Form(default="Tiếng Việt"),
 ):
     try:
         # 1. Upload ảnh Mascot (nếu có) lên Google Drive ngay lập tức
@@ -223,14 +251,16 @@ async def create_video(
         # 3. Tạo record rỗng (trạng thái pending) trong Sheet
         record_data = {
             "video_type": video_type,
-            "channel": channel,
-            "scheduled_date": scheduled_date,
             "raw_content": raw_content,
             "style_id": style_id,
             "style_name": style_name,
             "duration": duration,
             "country_hook": country_code,
             "status": "pending",
+            "engine_type": engine_type,
+            "avatar_id": avatar_id,
+            "voice_id": voice_id,
+            "target_language": target_language,
             # Lưu URL ảnh mascot vào Sheet ngay để team có thể xem
             "image_urls": [mascot_image_url] if mascot_image_url else [],
         }
@@ -247,8 +277,10 @@ async def create_video(
             video_type=video_type,
             extra_data=extra_data,
             mascot_image_url=mascot_image_url,
-            channel=channel,
-            scheduled_date=scheduled_date
+            engine_type=engine_type,
+            avatar_id=avatar_id,
+            voice_id=voice_id,
+            target_language=target_language,
         )
         
         return {
@@ -260,6 +292,46 @@ async def create_video(
     except Exception as e:
         import traceback
         print(f"[/create] ERROR: {e}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Lỗi server: {str(e)}")
+
+@router.post("/schedule")
+async def schedule_video(
+    sheet_id: str = Form(...),
+    channel: str = Form(...),
+    scheduled_date: str = Form(...),
+    caption: str = Form(default=""),
+    video_file: UploadFile = File(...)
+):
+    """
+    Endpoint mới để user upload video đã edit và hẹn giờ đăng.
+    """
+    try:
+        # 1. Upload video MP4 lên Google Drive
+        video_url = await upload_video(video_file)
+        
+        # 2. Gửi sang n8n
+        n8n_url = os.getenv("N8N_WEBHOOK_URL")
+        if n8n_url and n8n_url != "http://your-n8n.com/webhook/create-video":
+            n8n_payload = {
+                "sheet_id": sheet_id,
+                "channel": channel,
+                "video_url": video_url,
+                "caption": caption,
+                "scheduled_date": scheduled_date,
+                "callback_url": f"{os.getenv('BACKEND_URL', 'http://localhost:8000')}/api/v1/video/callback",
+            }
+            
+            async with httpx.AsyncClient(timeout=10) as client:
+                await client.post(n8n_url, json=n8n_payload)
+                print(f"[{sheet_id}] Đã lên lịch n8n thành công.")
+                
+        # Cập nhật status
+        update_video_status(sheet_id, "scheduled", {"final_video_url": video_url})
+        return {"status": "success", "message": "Đã lên lịch đăng bài thành công"}
+        
+    except Exception as e:
+        import traceback
+        print(f"[/schedule] ERROR: {e}\n{traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=f"Lỗi server: {str(e)}")
 
 @router.post("/callback")

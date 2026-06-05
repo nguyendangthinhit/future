@@ -1,55 +1,78 @@
+import asyncio
+import json
+import os
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
-from services.sheets import get_all_videos, create_video_record
-from services.agents.pipeline import run_full_pipeline, load_country_profile
-import os, json, requests
+
+from models.brief import Brief
+from services.orchestrator import run_full_factory
+from services.sheets import create_video_record
+
 
 scheduler = BackgroundScheduler()
 
+
 def daily_auto_suggest():
-    """
-    Quy trình tự động hàng ngày:
-    1. Crawl trending data (đọc từ file JSON được Data Member cập nhật)
-    2. Chạy Agent tổng hợp ý tưởng mới
-    3. Ghi vào Sheet với status='verify'
-    """
-    print("[CRON] Bắt đầu chạy Auto Suggest lúc 2:00 AM...")
-    
-    # Đọc trending data do Data Member crawl về (đặt sẵn vào file)
+    """Create verify-ready factory suggestions from local trending data."""
+    print("[CRON] Starting daily auto suggest at 2:00 AM...")
+
     trending_path = os.path.join(os.path.dirname(__file__), "../data/trending_live.json")
     if not os.path.exists(trending_path):
-        print("[CRON] Không tìm thấy file trending_live.json. Bỏ qua.")
+        print("[CRON] trending_live.json not found. Skipping.")
         return
-    
-    with open(trending_path, "r", encoding="utf-8") as f:
-        trending_data = json.load(f)
-    
-    for item in trending_data.get("topics", [])[:3]:  # Xử lý tối đa 3 topic/lần
+
+    with open(trending_path, "r", encoding="utf-8") as file:
+        trending_data = json.load(file)
+
+    created_count = 0
+    for item in trending_data.get("topics", [])[:3]:
         country_code = item.get("country_code", "VN")
-        topic = item.get("topic", "")
-        
-        pipeline_result = run_full_pipeline(
-            raw_content=f"Tạo video về chủ đề đang trending: {topic}",
-            country_code=country_code,
-            style_name="Energetic Trending",
-            duration=60,
+        topic = item.get("topic", "").strip()
+        if not topic:
+            continue
+
+        brief = Brief(
+            theme=f"Trending topic: {topic}",
+            brand={
+                "name": "MarkX",
+                "toneOfVoice": "fast, social-first, trend-aware",
+                "claimsAllowed": [],
+                "claimsForbidden": [],
+            },
+            audience={"segment": country_code, "age": "18-34", "locale": "vi-VN"},
+            platform="tiktok",
+            constraints={
+                "lengthSec": 30,
+                "aspect": ["9:16"],
+                "mustInclude": [topic],
+                "mustAvoid": [],
+            },
+            variantsTarget=2,
         )
-        
+
+        factory_result = asyncio.run(
+            run_full_factory(brief, include_vo=False, include_video=False)
+        )
+        plan = factory_result.get("plan", {})
+
         create_video_record({
             "video_type": "entertainment",
             "channel": "tiktok",
             "scheduled_date": "",
             "raw_content": topic,
-            "style_id": "style_001",
-            "style_name": "Energetic Trending",
-            "duration": 60,
+            "style_id": "factory",
+            "style_name": "Content Factory",
+            "duration": 30,
             "country_hook": country_code,
-            "final_prompt": pipeline_result["director_output"].get("global_style_prompt", ""),
+            "final_prompt": json.dumps(plan, ensure_ascii=False),
             "status": "verify",
-            "source": "auto_suggest",
+            "source": "factory_auto_suggest",
         })
-    
-    print(f"[CRON] Hoàn thành! Đã tạo {len(trending_data.get('topics', [])[:3])} ý tưởng mới.")
+        created_count += 1
+
+    print(f"[CRON] Done. Created {created_count} factory suggestions.")
+
 
 def start_scheduler():
     scheduler.add_job(
@@ -59,4 +82,4 @@ def start_scheduler():
         replace_existing=True,
     )
     scheduler.start()
-    print("[SCHEDULER] Cron job đã được đăng ký: chạy lúc 2:00 AM hàng ngày")
+    print("[SCHEDULER] Registered daily auto suggest at 2:00 AM.")

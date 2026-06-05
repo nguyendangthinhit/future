@@ -44,6 +44,39 @@ async def generate_video(prompt_data: dict) -> str:
             print(f"Error calling Ecomdy API: {response.text}")
             raise Exception(f"Ecomdy API failed with status {response.status_code}: {response.text}")
 
+async def generate_avatar_video(prompt_data: dict) -> str:
+    """
+    Gọi Ecomdy Avatar API.
+    prompt_data BẮT BUỘC có "avatar_id" và "script".
+    """
+    api_key = os.getenv("ECOMDY_API_KEY")
+    if not api_key:
+        print("Warning: ECOMDY_API_KEY is not set. Simulating generation.")
+        return "mock_job_id"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{ECOMDY_API_URL}/avatar/generate",
+            json=prompt_data,
+            headers=headers,
+            timeout=30.0,
+        )
+
+        if response.status_code in (200, 201, 202):
+            data = response.json().get("data", {})
+            job_id = data.get("job_id") or data.get("id")
+            if not job_id:
+                raise Exception(f"Ecomdy Avatar: không tìm thấy job_id trong response: {response.text}")
+            return job_id
+        else:
+            print(f"Error calling Ecomdy Avatar API: {response.text}")
+            raise Exception(f"Ecomdy Avatar API failed with status {response.status_code}: {response.text}")
+
 
 async def poll_video_status(job_id: str, max_retries: int = 60, delay_seconds: int = 5) -> str:
     """

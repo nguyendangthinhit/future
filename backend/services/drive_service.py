@@ -73,6 +73,47 @@ async def upload_image(file: UploadFile) -> str:
         print(f"⚠️ Google Drive upload exception: {e}. Dùng ảnh mặc định.")
         return FALLBACK_IMAGE_URL
 
+async def upload_video(file: UploadFile) -> str:
+    """Upload video (.mp4) lên Google Drive và trả về URL trực tiếp."""
+    folder_id = os.getenv("GOOGLE_DRIVE_FOLDER_ID")
+    service = get_drive_service()
+    
+    contents = await file.read()
+    
+    if not service or not folder_id:
+        raise Exception("GOOGLE_DRIVE_FOLDER_ID chưa được cấu hình.")
+        
+    try:
+        file_metadata = {
+            "name": file.filename or "video.mp4",
+            "parents": [folder_id]
+        }
+        media = MediaIoBaseUpload(io.BytesIO(contents), mimetype=file.content_type or "video/mp4", resumable=True)
+        
+        uploaded_file = service.files().create(
+            body=file_metadata,
+            media_body=media,
+            fields="id",
+            supportsAllDrives=True,
+        ).execute()
+        
+        file_id = uploaded_file.get("id")
+        
+        service.permissions().create(
+            fileId=file_id,
+            body={"type": "anyone", "role": "reader"},
+            supportsAllDrives=True,
+        ).execute()
+        
+        # Link tải trực tiếp
+        direct_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+        print(f"✅ Video đã upload lên Google Drive: {direct_url}")
+        return direct_url
+        
+    except Exception as e:
+        print(f"⚠️ Google Drive upload exception: {e}")
+        raise e
+
 async def _upload_to_imgbb(contents: bytes, filename: str) -> str | None:
     """Fallback: upload ảnh lên imgbb (free, no quota limit)."""
     api_key = os.getenv("IMGBB_API_KEY")

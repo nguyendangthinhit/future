@@ -16,7 +16,7 @@ export function Field({
       <label className="flex items-center gap-1.5 text-sm font-medium text-slate-200">
         {label}
         {required && <span className="text-fuchsia-400">*</span>}
-        {hint && <span className="font-normal text-slate-500">· {hint}</span>}
+        {hint && <span className="font-normal text-slate-500">/ {hint}</span>}
       </label>
       {children}
     </div>
@@ -86,13 +86,15 @@ export function OptionCard({
         <span
           className={cn(
             "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105",
-            selected ? "bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]" : "bg-white/5"
+            selected
+              ? "bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
+              : "bg-white/5"
           )}
         >
           {icon}
         </span>
       )}
-      <span className="space-y-1 mt-0.5">
+      <span className="mt-0.5 space-y-1">
         <span className="block text-sm font-semibold text-slate-100 transition-colors group-hover:text-white">
           {title}
         </span>
@@ -111,7 +113,7 @@ export function Toggle({
   description,
 }: {
   checked: boolean;
-  onChange: (v: boolean) => void;
+  onChange: (value: boolean) => void;
   label: string;
   description?: string;
 }) {
@@ -130,9 +132,7 @@ export function Toggle({
       <span
         className={cn(
           "relative h-6 w-11 shrink-0 rounded-full transition-colors",
-          checked
-            ? "bg-gradient-to-r from-sky-500 to-fuchsia-500"
-            : "bg-white/15"
+          checked ? "bg-gradient-to-r from-sky-500 to-fuchsia-500" : "bg-white/15"
         )}
       >
         <span

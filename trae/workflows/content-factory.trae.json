@@ -1,0 +1,57 @@
+{
+  "name": "content-factory",
+  "description": "TRAE-orchestrated content factory for BX-T1",
+  "stages": [
+    {
+      "id": "plan",
+      "name": "Planner + Brand Steward",
+      "endpoint": "POST /api/v1/factory/stage/plan",
+      "input": {
+        "type": "brief"
+      },
+      "output": {
+        "plan": "plan",
+        "brand_lock": "brand_lock"
+      }
+    },
+    {
+      "id": "variant-a",
+      "name": "Variant A Crew",
+      "endpoint": "POST /api/v1/factory/stage/variant",
+      "input": {
+        "brief": "{{input.brief}}",
+        "brand_lock": "{{output.plan.brand_lock}}",
+        "variant": "{{output.plan.plan.variants[0]}}",
+        "include_vo": true,
+        "include_video": true
+      },
+      "depends_on": ["plan"]
+    },
+    {
+      "id": "variant-b",
+      "name": "Variant B Crew",
+      "endpoint": "POST /api/v1/factory/stage/variant",
+      "input": {
+        "brief": "{{input.brief}}",
+        "brand_lock": "{{output.plan.brand_lock}}",
+        "variant": "{{output.plan.plan.variants[1]}}",
+        "include_vo": true,
+        "include_video": true
+      },
+      "depends_on": ["plan"]
+    },
+    {
+      "id": "finalize",
+      "name": "Finalize Pack",
+      "endpoint": "POST /api/v1/factory/stage/finalize",
+      "input": {
+        "brief": "{{input.brief}}",
+        "variants": [
+          "{{output.variant-a}}",
+          "{{output.variant-b}}"
+        ]
+      },
+      "depends_on": ["variant-a", "variant-b"]
+    }
+  ]
+}

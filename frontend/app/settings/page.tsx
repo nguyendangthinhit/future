@@ -1,126 +1,185 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { TextInput, Toggle } from "@/components/ui/field";
-import { KeyRound, Shield, Bell, HardDrive, CheckCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { Field, TextArea, TextInput } from "@/components/ui/field";
+import { Card } from "@/components/ui/card";
+import { CheckCircle2, Palette, ShieldCheck, Volume2 } from "lucide-react";
+
+const STORAGE_KEY = "content_factory_brand_settings";
+
+interface BrandSettings {
+  brandName: string;
+  toneOfVoice: string;
+  primary: string;
+  accent: string;
+  bg: string;
+  displayFont: string;
+  bodyFont: string;
+  voiceId: string;
+  claimsAllowed: string;
+  claimsForbidden: string;
+}
+
+const DEFAULT_SETTINGS: BrandSettings = {
+  brandName: "MarkX Demo",
+  toneOfVoice: "direct, credible, warm",
+  primary: "#0f172a",
+  accent: "#38bdf8",
+  bg: "#f8fafc",
+  displayFont: "Inter",
+  bodyFont: "Inter",
+  voiceId: "",
+  claimsAllowed: "rang xay moi ngay\ngiao nhanh\nnguon goc ro rang",
+  claimsForbidden: "chua khoi benh\ncam ket 100% ket qua\ngiam gia gay hieu nham",
+};
 
 export default function SettingsPage() {
-  const [apiKey, setApiKey] = useState("");
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
-  const [autoSync, setAutoSync] = useState(true);
-  const [notifications, setNotifications] = useState(true);
+  const [settings, setSettings] = useState<BrandSettings>(DEFAULT_SETTINGS);
+  const [saved, setSaved] = useState(false);
 
-  const handleSave = () => {
-    setSaveStatus("saving");
-    setTimeout(() => {
-      setSaveStatus("saved");
-      setTimeout(() => setSaveStatus("idle"), 2000);
-    }, 1000);
-  };
+  useEffect(() => {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    try {
+      setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(raw) });
+    } catch {
+      setSettings(DEFAULT_SETTINGS);
+    }
+  }, []);
+
+  function updateField<K extends keyof BrandSettings>(key: K, value: BrandSettings[K]) {
+    setSettings((current) => ({ ...current, [key]: value }));
+    setSaved(false);
+  }
+
+  function save() {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 2000);
+  }
 
   return (
-    <main className="min-h-screen p-6 sm:p-10 max-w-4xl mx-auto space-y-10">
-      {/* Header */}
-      <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-white">Cài đặt</h1>
-        <p className="text-slate-400">Tùy chỉnh hệ thống, API Key và thông báo.</p>
-      </div>
+    <main className="mx-auto min-h-screen max-w-5xl space-y-8 p-6 sm:p-10">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+            Brand Control
+          </p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Cai dat brand kit
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+            Luu cach noi, mau sac, font va nhung dieu AI duoc/khong duoc noi.
+          </p>
+        </div>
+        <Button onClick={save}>
+          {saved ? <CheckCircle2 className="h-4 w-4" /> : null}
+          {saved ? "Da luu" : "Luu cau hinh"}
+        </Button>
+      </header>
 
-      <div className="grid gap-10">
-        
-        {/* Section: API Keys */}
-        <motion.section 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-          className="space-y-6"
-        >
-          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10">
-              <KeyRound className="h-5 w-5 text-indigo-400" />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-white">API AI & Dịch vụ</h2>
-              <p className="text-sm text-slate-400">Cấu hình kết nối tới Gemini / LightningAI</p>
-            </div>
+      <section className="grid gap-6 lg:grid-cols-2">
+        <Card className="p-6">
+          <div className="mb-6 flex items-center gap-3">
+            <ShieldCheck className="h-5 w-5 text-emerald-300" />
+            <h2 className="text-lg font-semibold text-white">Brand voice</h2>
           </div>
-
-          <div className="rounded-[2rem] bg-white/[0.02] border border-white/5 p-2">
-            <div className="rounded-[calc(2rem-0.5rem)] bg-[#0a0a0a] p-6 space-y-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300 block">Gemini API Key</label>
-                <div className="flex gap-3">
-                  <TextInput 
-                    type="password" 
-                    placeholder="AIzaSy..." 
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    className="flex-1"
-                  />
-                  <Button 
-                    onClick={handleSave} 
-                    disabled={saveStatus === "saving" || !apiKey}
-                    className="group active:scale-[0.98] transition-all w-32"
-                  >
-                    {saveStatus === "saving" ? "Đang lưu..." : saveStatus === "saved" ? (
-                      <><CheckCircle2 className="h-4 w-4 mr-2" /> Đã lưu</>
-                    ) : "Lưu thay đổi"}
-                  </Button>
-                </div>
-                <p className="text-xs text-slate-500 mt-2 flex items-center gap-1.5">
-                  <Shield className="h-3 w-3" /> API Key được lưu trữ cục bộ và mã hóa.
-                </p>
-              </div>
-            </div>
+          <div className="space-y-5">
+            <Field label="Brand name">
+              <TextInput
+                value={settings.brandName}
+                onChange={(event) => updateField("brandName", event.target.value)}
+              />
+            </Field>
+            <Field label="Tone of voice">
+              <TextInput
+                value={settings.toneOfVoice}
+                onChange={(event) => updateField("toneOfVoice", event.target.value)}
+              />
+            </Field>
+            <Field label="Duoc noi ve san pham" hint="moi dong mot y">
+              <TextArea
+                rows={5}
+                value={settings.claimsAllowed}
+                onChange={(event) => updateField("claimsAllowed", event.target.value)}
+              />
+            </Field>
+            <Field label="Khong duoc noi" hint="moi dong mot y">
+              <TextArea
+                rows={5}
+                value={settings.claimsForbidden}
+                onChange={(event) => updateField("claimsForbidden", event.target.value)}
+              />
+            </Field>
           </div>
-        </motion.section>
+        </Card>
 
-        {/* Section: Preferences */}
-        <motion.section 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-          className="space-y-6"
-        >
-          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10">
-              <HardDrive className="h-5 w-5 text-emerald-400" />
+        <div className="space-y-6">
+          <Card className="p-6">
+            <div className="mb-6 flex items-center gap-3">
+              <Palette className="h-5 w-5 text-sky-300" />
+              <h2 className="text-lg font-semibold text-white">Palette & fonts</h2>
             </div>
-            <div>
-              <h2 className="text-lg font-semibold text-white">Hệ thống & Dữ liệu</h2>
-              <p className="text-sm text-slate-400">Quản lý đồng bộ và thông báo hệ thống</p>
-            </div>
-          </div>
-
-          <div className="rounded-[2rem] bg-white/[0.02] border border-white/5 p-2">
-            <div className="rounded-[calc(2rem-0.5rem)] bg-[#0a0a0a] p-6 space-y-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] divide-y divide-white/5">
-              
-              <div className="pb-6">
-                <Toggle 
-                  checked={autoSync}
-                  onChange={setAutoSync}
-                  label="Đồng bộ đám mây"
-                  description="Tự động đồng bộ lịch sử và cấu hình video lên máy chủ."
+            <div className="grid gap-5 sm:grid-cols-3">
+              <Field label="Primary">
+                <TextInput
+                  value={settings.primary}
+                  onChange={(event) => updateField("primary", event.target.value)}
                 />
-              </div>
-
-              <div className="pt-6">
-                <Toggle 
-                  checked={notifications}
-                  onChange={setNotifications}
-                  label="Thông báo trạng thái"
-                  description="Nhận thông báo khi render xong video hoặc đăng bài thành công."
+              </Field>
+              <Field label="Accent">
+                <TextInput
+                  value={settings.accent}
+                  onChange={(event) => updateField("accent", event.target.value)}
                 />
-              </div>
-
+              </Field>
+              <Field label="Background">
+                <TextInput
+                  value={settings.bg}
+                  onChange={(event) => updateField("bg", event.target.value)}
+                />
+              </Field>
             </div>
-          </div>
-        </motion.section>
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+              <Field label="Display font">
+                <TextInput
+                  value={settings.displayFont}
+                  onChange={(event) => updateField("displayFont", event.target.value)}
+                />
+              </Field>
+              <Field label="Body font">
+                <TextInput
+                  value={settings.bodyFont}
+                  onChange={(event) => updateField("bodyFont", event.target.value)}
+                />
+              </Field>
+            </div>
+            <div className="mt-6 flex overflow-hidden rounded-3xl border border-white/10">
+              {[settings.primary, settings.accent, settings.bg].map((color) => (
+                <div key={color} className="h-24 flex-1" style={{ background: color }} />
+              ))}
+            </div>
+          </Card>
 
-      </div>
+          <Card className="p-6">
+            <div className="mb-6 flex items-center gap-3">
+              <Volume2 className="h-5 w-5 text-violet-300" />
+              <h2 className="text-lg font-semibold text-white">Voice provider</h2>
+            </div>
+            <Field label="Voice ID" hint="ElevenLabs or provider voice id">
+              <TextInput
+                value={settings.voiceId}
+                placeholder="voice_..."
+                onChange={(event) => updateField("voiceId", event.target.value)}
+              />
+            </Field>
+            <p className="mt-4 text-xs leading-5 text-slate-500">
+              Seedance/Seed2 BytePlus integration is intentionally excluded per current scope.
+            </p>
+          </Card>
+        </div>
+      </section>
     </main>
   );
 }

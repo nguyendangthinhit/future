@@ -1,0 +1,34 @@
+{
+  "theme": "Cà phê sữa đá Highlands cho giới trẻ gen-z Việt Nam",
+  "brand": {
+    "name": "Highlands Coffee",
+    "toneOfVoice": "vui tươi, trẻ trung, relatable, có chút hoài niệm Sài Gòn",
+    "palette": {
+      "primary": "#8B4513",
+      "accent": "#FFD700",
+      "bg": "#FFFFFF"
+    },
+    "fonts": {
+      "display": "Montserrat",
+      "body": "Inter"
+    },
+    "logoUrl": "https://drive.google.com/uc?id=highlands-logo",
+    "voiceId": "vi-female-1",
+    "claimsAllowed": ["tươi mỗi ngày", "cà phê Việt"],
+    "claimsForbidden": ["chữa khỏi", "100% hiệu quả", "thuốc"]
+  },
+  "audience": {
+    "segment": "gen-z Vietnam",
+    "age": "18-25",
+    "locale": "vi-VN"
+  },
+  "platform": "tiktok",
+  "constraints": {
+    "lengthSec": 20,
+    "aspect": ["9:16"],
+    "mustInclude": ["cà phê sữa đá", "ly nhựa quen thuộc"],
+    "mustAvoid": ["thuốc lá", "rượu bia"]
+  },
+  "moodboardUrls": [],
+  "variantsTarget": 2
+}
